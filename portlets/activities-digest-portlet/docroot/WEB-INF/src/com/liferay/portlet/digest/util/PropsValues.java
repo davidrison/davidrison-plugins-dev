@@ -11,10 +11,6 @@ public class PropsValues {
 	public static final boolean DIGEST_DEVELOPER_MODE = GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.DIGEST_DEVELOPER_MODE), false);
 
-	public static final String DIGEST_DEVELOPER_EMAIL_TO_ADDRESS = PropsUtil.get(PropsKeys.DIGEST_DEVELOPER_EMAIL_TO_ADDRESS);
-
-	public static final String DIGEST_DEVELOPER_EMAIL_TO_NAME = PropsUtil.get(PropsKeys.DIGEST_DEVELOPER_EMAIL_TO_NAME);
-
 	public static final int DIGEST_ACTIVITY_SUMMARY_LENGTH =
 			GetterUtil.getInteger(
 					PropsUtil.get(PropsKeys.DIGEST_ACTIVITY_SUMMARY_LENGTH),
@@ -27,6 +23,10 @@ public class PropsValues {
 	public static final int DIGEST_ACTIVITY_MAX_CONCURRENT_USER_PROCESS =
 			GetterUtil.getInteger(
 					PropsUtil.get(PropsKeys.DIGEST_ACTIVITY_MAX_CONCURRENT_USER_PROCESS), 3);
+
+	public static final String DIGEST_DATE_FORMAT =
+			GetterUtil.getString(
+					PropsUtil.get(PropsKeys.DIGEST_DATE_FORMAT), "MM-dd-yyyy");
 
 	public static final String DIGEST_EMAIL_FROM_NAME = PropsUtil.get(PropsKeys.DIGEST_EMAIL_FROM_NAME);
 

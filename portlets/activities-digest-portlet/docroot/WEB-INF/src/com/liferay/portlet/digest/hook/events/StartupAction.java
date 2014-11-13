@@ -7,7 +7,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.util.*;
 import com.liferay.portlet.digest.util.DigestHelperUtil;
-import com.liferay.portlet.digest.util.PropsValues;
 import com.liferay.portlet.documentlibrary.util.DLUtil;
 import com.liferay.portlet.journal.NoSuchStructureException;
 import com.liferay.portlet.journal.NoSuchTemplateException;
@@ -208,10 +207,6 @@ public class StartupAction extends SimpleAction {
 	}
 
 	protected void doRun(long companyId) throws Exception {
-
-		boolean developerMode =
-				PropsValues.DIGEST_DEVELOPER_MODE;
-
 		setupDefaultDigestConfiguration(companyId);
 		setupDigestImages(companyId);
 		setupDigestTemplates(companyId);

@@ -17,9 +17,7 @@ public class PropsKeys {
 
 	public static final String DIGEST_DEVELOPER_MODE = "digest.developer.mode";
 
-	public static final String DIGEST_DEVELOPER_EMAIL_TO_ADDRESS = "digest.developer.email.to.address";
-
-	public static final String DIGEST_DEVELOPER_EMAIL_TO_NAME = "digest.developer.email.to.name";
+	public static final String DIGEST_DATE_FORMAT = "digest.date.format.pattern";
 
 	public static final String DIGEST_EMAIL_FROM_NAME = "digest.email.from.name";
 

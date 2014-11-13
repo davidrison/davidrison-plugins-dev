@@ -7,23 +7,17 @@
 		<icon>/icon.png</icon>
 		<scheduler-entry>
 			<scheduler-event-listener-class>com.liferay.portlet.digest.activity.messaging.DigestActivityDailyListener</scheduler-event-listener-class>
-			<!--<trigger>
-				<cron>
-					<cron-trigger-value>0 2 * * *</cron-trigger-value>
-				</cron>
-			</trigger>-->
 			<trigger>
-				<simple>
-					<simple-trigger-value>5</simple-trigger-value>
-					<time-unit>minute</time-unit>
-				</simple>
+				<cron>
+					<cron-trigger-value>0 0 2 * * *</cron-trigger-value> <!-- 2AM EVERY DAY-->
+				</cron>
 			</trigger>
 		</scheduler-entry>
 		<scheduler-entry>
 			<scheduler-event-listener-class>com.liferay.portlet.digest.activity.messaging.DigestActivityWeeklyListener</scheduler-event-listener-class>
 			<trigger>
 				<cron>
-					<cron-trigger-value>0 2 * * 6</cron-trigger-value>
+					<cron-trigger-value>0 0 2 * * 6</cron-trigger-value> <!-- 2AM EVERY SAT -->
 				</cron>
 			</trigger>
 		</scheduler-entry>
@@ -31,7 +25,7 @@
 			<scheduler-event-listener-class>com.liferay.portlet.digest.activity.messaging.DigestActivityInactiveUserListener</scheduler-event-listener-class>
 			<trigger>
 				<cron>
-					<cron-trigger-value>0 4 * * *</cron-trigger-value>
+					<cron-trigger-value>0 0 4 * * *</cron-trigger-value> <!-- 4AM EVERY DAY -->
 				</cron>
 			</trigger>
 		</scheduler-entry>

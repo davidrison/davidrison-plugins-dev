@@ -42,8 +42,7 @@ public class DigestHelperImpl implements DigestHelper {
 	@Override
 	public String formatDate(Date date) {
 		DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat(
-				GetterUtil.getString(
-						PropsUtil.get("digest.date.format.pattern."), "MM-dd-yyyy"));
+				PropsValues.DIGEST_DATE_FORMAT);
 
 		return dateFormat.format(date);
 	}

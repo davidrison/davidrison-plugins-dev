@@ -253,28 +253,3 @@
 	</c:otherwise>
 </c:choose>
 
-<aui:script>
-	AUI().use(
-	'aui-nested-list',
-	function(A) {
-	var placeholder = A.Node.create('<li class="placeholder"></li>');
-
-	new A.NestedList(
-	{
-	dropCondition: function(event) {
-		updateAssetOrder();
-
-		return true;
-	},
-	dropOn: 'activityTypesList',
-	nodes: '#activityTypesList li',
-	placeholder: placeholder
-	}
-	);
-	}
-	);
-
-	function updateAssetOrder() {
-		alert("Update Asset Order");
-	}
-</aui:script>

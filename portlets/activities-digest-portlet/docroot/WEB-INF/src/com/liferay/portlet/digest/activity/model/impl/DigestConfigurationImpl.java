@@ -80,8 +80,10 @@ public class DigestConfigurationImpl extends DigestConfigurationBaseImpl {
 	}
 
 	public List<DigestActivityType> getActivityTypesList() throws Exception {
-		if (Validator.isNotNull(_digestActivityTypes)) {// TODO FIX CACHE
-			return _digestActivityTypes;
+		if (Validator.isNotNull(_digestActivityTypes)) {
+			if (_originalDigestActivityTypes.equals(getActivityTypes())) {
+				return _digestActivityTypes;
+			}
 		}
 
 		String digestConfigurationActivityTypes =
@@ -106,12 +108,16 @@ public class DigestConfigurationImpl extends DigestConfigurationBaseImpl {
 
 		_digestActivityTypes = digestActivityTypes;
 
+		_originalDigestActivityTypes = getActivityTypes();
+
 		return _digestActivityTypes;
 	}
 
 	public Map<String, DigestActivityType> getActivityTypesMap() throws Exception {
-		if (Validator.isNotNull(_digestActivityTypesMap)) {// TODO FIX CACHE
-			return _digestActivityTypesMap;
+		if (Validator.isNotNull(_digestActivityTypesMap)) {
+			if (_originalDigestActivityTypes.equals(getActivityTypes())) {
+				return _digestActivityTypesMap;
+			}
 		}
 
 		Map<String, DigestActivityType> digestActivityTypes =
@@ -125,6 +131,8 @@ public class DigestConfigurationImpl extends DigestConfigurationBaseImpl {
 		}
 
 		_digestActivityTypesMap = digestActivityTypes;
+
+		_originalDigestActivityTypes = getActivityTypes();
 
 		return _digestActivityTypesMap;
 	}
@@ -204,6 +212,7 @@ public class DigestConfigurationImpl extends DigestConfigurationBaseImpl {
 
 	private List<DigestActivityType> _digestActivityTypes;
 	private Map<String, DigestActivityType> _digestActivityTypesMap;
+	private String _originalDigestActivityTypes;
 
 	private static final Log _log = LogFactoryUtil.getLog(DigestConfigurationImpl.class);
 

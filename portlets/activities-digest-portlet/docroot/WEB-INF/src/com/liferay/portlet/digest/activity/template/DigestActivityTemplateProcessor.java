@@ -33,9 +33,6 @@ public class DigestActivityTemplateProcessor {
 
 	public static String mergeDigest(long companyId, String templateId, List<Digest> digests) throws Exception {
 
-		// sort
-		// TODO FIX SORT
-
 		// merge
 
 		VelocityContext velocityContext = getVelocityContext(companyId, templateId, digests);

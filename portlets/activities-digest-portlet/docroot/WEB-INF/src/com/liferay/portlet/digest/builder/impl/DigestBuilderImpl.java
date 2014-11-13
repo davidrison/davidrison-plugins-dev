@@ -1,7 +1,6 @@
 package com.liferay.portlet.digest.builder.impl;
 
 import com.liferay.compat.portal.kernel.util.ArrayUtil;
-import com.liferay.compat.portal.kernel.util.StringUtil;
 import com.liferay.mail.service.MailServiceUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -16,6 +15,7 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portlet.digest.activity.DigestActivity;
 import com.liferay.portlet.digest.activity.DigestActivityType;
 import com.liferay.portlet.digest.activity.model.DigestConfiguration;
 import com.liferay.portlet.digest.activity.model.UserDigestConfiguration;
@@ -198,6 +198,8 @@ public class DigestBuilderImpl implements DigestBuilder {
 					}
 
 					if (isSkipDigestConfiguration(digestConfiguration, user.getUserId(), 0)) {
+						_addEmptyDigest(user, group, digestConfiguration, siteDigestList);
+
 						continue;
 					}
 
@@ -414,7 +416,7 @@ public class DigestBuilderImpl implements DigestBuilder {
 
 	protected void sendDigestEmail(long userId, DigestConfiguration digestConfiguration, String body) throws Exception {
 
-		if (PropsValues.DIGEST_DEVELOPER_MODE || true) {
+		if (PropsValues.DIGEST_DEVELOPER_MODE) {
 			File tempFile = FileUtil.createTempFile();
 
 			FileWriter fileWriter = new FileWriter(tempFile);
@@ -439,23 +441,6 @@ public class DigestBuilderImpl implements DigestBuilder {
 					user.getFullName())
 		};
 
-		if (PropsValues.DIGEST_DEVELOPER_MODE) {
-			List<InternetAddress> developerTo =
-					new ArrayList<InternetAddress>();
-
-			String[] developerEmailAddresses =
-					StringUtil.split(
-							PropsValues.DIGEST_DEVELOPER_EMAIL_TO_ADDRESS, ',');
-
-			for (String developerEmailAddress : developerEmailAddresses) {
-				developerTo.add(new InternetAddress(
-						developerEmailAddress,
-						PropsValues.DIGEST_DEVELOPER_EMAIL_TO_NAME));
-			}
-
-			to = developerTo.toArray(new InternetAddress[0]);
-		}
-
 		String subject = digestConfiguration.getFrequency() == DigestConstants.FREQUENCY_DAILY ?
 				LanguageUtil.get(user.getLocale(), "digest-frequency-daily-email-subject") :
 				LanguageUtil.get(user.getLocale(), "digest-frequency-weekly-email-subject");
@@ -474,6 +459,29 @@ public class DigestBuilderImpl implements DigestBuilder {
 
 	public void setDigestActivityProcessors(Map<String, DigestActivityProcessor> digestActivityParsers) {
 		_digestActivityProcessors = digestActivityParsers;
+	}
+
+	private void _addEmptyDigest(User user, Group group, DigestConfiguration digestConfiguration, List<Digest> siteDigestList) throws Exception {
+		if (Validator.isNotNull(siteDigestList)) {
+			Digest digest = new DigestImpl(digestConfiguration);
+
+			digest.setGroup(group);
+			digest.setUser(user);
+
+			Map<String, List<DigestActivity>> digestActivityMap =
+					new HashMap<String, List<DigestActivity>>();
+
+			List<DigestActivityType> digestActivityTypeList =
+					DigestHelperUtil.getAvailableDigestActivityTypes();
+
+			for (DigestActivityType digestActivityType : digestActivityTypeList) {
+				digestActivityMap.put(digestActivityType.getName(), new ArrayList<DigestActivity>());
+			}
+
+			digest.setActivities(digestActivityMap);
+
+			siteDigestList.add(digest);
+		}
 	}
 
 	private DigestConfiguration _copyDigestConfiguration(DigestConfiguration digestConfiguration, User user) throws Exception {

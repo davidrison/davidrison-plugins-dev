@@ -125,7 +125,7 @@ public class SocialRelationConverter extends BaseDigestActivityConverter {
 				long userId1 = extraDataJSONObject.getInt("userId1");
 				long userId2 = extraDataJSONObject.getLong("userId2");
 
-				if (userId2 == digestUser.getUserId()) {
+				if (userId2 != digestUser.getUserId()) {
 					return UserLocalServiceUtil.fetchUser(userId2);
 				}
 				else {
