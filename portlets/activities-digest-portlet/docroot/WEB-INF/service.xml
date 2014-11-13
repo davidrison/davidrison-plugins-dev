@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.1.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_1_0.dtd">
+
+<service-builder package-path="com.liferay.portlet.digest.activity" auto-namespace-tables="true">
+	<namespace>Digest</namespace>
+
+	<entity name="Digest" local-service="true" remote-service="false" />
+
+	<entity name="DigestConfiguration" local-service="true" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="id" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="groupId" type="long" />
+		<column name="userId" type="long"/>
+		<column name="enabled" type="boolean" />
+		<column name="frequency" type="int"/>
+		<column name="scopeGroupId" type="long" />
+		<column name="scopeUserId" type="long" />
+		<column name="summaryLength" type="int" />
+		<column name="activityTypes" type="String" />
+
+		<!-- Finder methods -->
+
+		<finder name="C_E" return-type="Collection">
+			<finder-column name="companyId"/>
+			<finder-column name="enabled"/>
+		</finder>
+		
+		<finder name="ScopeGroupId" return-type="DigestConfiguration">
+			<finder-column name="scopeGroupId" />
+		</finder>
+
+		<finder name="SG_F" return-type="DigestConfiguration">
+			<finder-column name="scopeGroupId" />
+			<finder-column name="frequency" />
+		</finder>
+
+		<finder name="ScopeUserId" return-type="DigestConfiguration">
+			<finder-column name="scopeUserId" />
+		</finder>
+
+		<finder name="C_SG_SU_E" return-type="DigestConfiguration">
+			<finder-column name="companyId" />
+			<finder-column name="scopeGroupId" />
+			<finder-column name="scopeUserId" />
+			<finder-column name="enabled"/>
+		</finder>
+
+		<finder name="SU_F" return-type="DigestConfiguration">
+			<finder-column name="scopeUserId" />
+			<finder-column name="frequency" />
+		</finder>
+		<finder name="C_SG_SU" return-type="DigestConfiguration">
+			<finder-column name="companyId" />
+			<finder-column name="scopeGroupId" />
+			<finder-column name="scopeUserId" />
+		</finder>
+
+		<finder name="C_SG_SU_F" return-type="DigestConfiguration">
+			<finder-column name="companyId" />
+			<finder-column name="scopeGroupId" />
+			<finder-column name="scopeUserId" />
+			<finder-column name="frequency" />
+		</finder>
+	</entity>
+
+	<entity name="UserDigestConfiguration" local-service="true" remote-service="false">
+		<!-- PK fields -->
+
+		<column name="id" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="userId" type="long" />
+		<column name="frequency" type="int" />
+
+		<!-- Finder methods -->
+
+		<finder name="CompanyId" return-type="Collection">
+			<finder-column name="companyId" />
+		</finder>
+		
+		<finder name="UserId" return-type="UserDigestConfiguration">
+			<finder-column name="userId" />
+		</finder>
+	</entity>
+</service-builder>

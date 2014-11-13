@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="com.liferay.portlet.digest.activity.service.DigestLocalService" class="com.liferay.portlet.digest.activity.service.impl.DigestLocalServiceImpl" />
+	<bean id="com.liferay.portlet.digest.activity.service.DigestConfigurationLocalService" class="com.liferay.portlet.digest.activity.service.impl.DigestConfigurationLocalServiceImpl" />
+	<bean id="com.liferay.portlet.digest.activity.service.persistence.DigestConfigurationPersistence" class="com.liferay.portlet.digest.activity.service.persistence.DigestConfigurationPersistenceImpl" parent="basePersistence" />
+	<bean id="com.liferay.portlet.digest.activity.service.UserDigestConfigurationLocalService" class="com.liferay.portlet.digest.activity.service.impl.UserDigestConfigurationLocalServiceImpl" />
+	<bean id="com.liferay.portlet.digest.activity.service.persistence.UserDigestConfigurationPersistence" class="com.liferay.portlet.digest.activity.service.persistence.UserDigestConfigurationPersistenceImpl" parent="basePersistence" />
+</beans>

@@ -1,0 +1,145 @@
+#set ($logoUrl = $digestHelperUtil.getLogoUrl($group.getGroupId()))
+
+<body>
+	<div class="email-wrapper" style="color: #494949;font-family: helvetica, arial, sans-serif;font-size: 13px;height: 100%;">
+		<div class="headline" style="background: #E6E6E6;-moz-linear-gradient(top, #E6E6E6 0%, #BFBFBF 100%);-webkit-gradient(linear, left top, left bottom, color-stop(0%,#E6E6E6), color-stop(100%,#BFBFBF));-webkit-linear-gradient(top, #E6E6E6 0%,#BFBFBF 100%);-o-linear-gradient(top, #E6E6E6 0%,#BFBFBF 100%);-ms-linear-gradient(top, #E6E6E6 0%,#BFBFBF 100%);linear-gradient(to bottom, #E6E6E6 0%,#BFBFBF 100%);filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#E6E6E6', endColorstr='#BFBFBF',GradientType=0 );margin-bottom: 30px;padding: 0 70px 0 35px;position: relative;">
+			<span class="title-text" style="display: block;font-size: 1.5em;padding: 0.5em 0;">
+				$digestTitle
+			</span>
+			<img class="headline-logo square-image" src="$logoUrl" style="height: 0.5em;width: 0.5em;right: 25px;top: 0.4em;">
+		</div>
+		<div class="main-content" style="padding: 0 15px;">
+			<div class="site-section">
+				<div class="section-header" style="border-bottom: 6px solid #347D8D;margin-bottom: 0.6em;padding-left: 80px;">
+					<span class="title-text" style="display: block;font-size: 1.5em;padding: 0.5em 0;">$account.getName()</span>
+				</div>
+				#foreach($digest in $digests)
+					#set ($digestConfiguration = $digest.getConfiguration())
+					#set ($activitiesList = $digest.getActivities())
+					#set ($group = $digest.getGroup())
+
+					<div class="topic-wrapper" style="margin-bottom: 20px;padding-left: 125px;">
+						<div class="topic-header" style="position: relative;">
+							<img class="topic-icon square-image" src="$logoUrl" alt="" style="height: 3.0em;width: 3.0em;left: -40px;position: absolute;top: 0.4em;">
+							<span class="title-text" style="display: block;font-size: 1.5em;padding: 0.5em 0;">$group.getName()</span>
+						</div>
+						<div class="topic-details">
+							#foreach($activityKey in $activitiesList.keySet())
+								#set ($activityList = $activitiesList.get($activityKey))
+								#set ($activityType = $digestActivityFactory.getDigestActivityType($activityKey))
+								#set ($activityTypeName = $activityType.getLocalizedName($locale))
+
+								#set ($digestConfigurationActivityType = $digestConfiguration.getActivityTypesMap().get($activityKey))
+
+								#if ($digestConfigurationActivityType.isEnabled())
+									#if($activityKey != 'com.liferay.portlet.social.model.SocialRelation')
+										<div class="details-area" style="margin-bottom: 10px; padding: 5px 0;">
+											<div class="details-title" style="font-weight: bolder;padding: 5px 0;">
+												<img class="topic-icon square-image" src="$activityType.getIconPath($company.getCompanyId())" alt="" style="height: 2.5em;width: 2.5em;position: absolute;left: -40px;top: 0.4em;">
+
+												$activityTypeName
+											</div>
+											<div class="details-body">
+												#if(!$activityList || ($activityList.size() == 0))
+													<div class="detail-item">$languageUtil.get($locale, "no-new-activity")</div>
+												#else
+													#foreach($activity in $activityList)
+														<div class="detail-item">
+															$activity.getLinkDisplay()
+														</div>
+														<div class="detail-item summary-text" style="text-indent: 25px;">
+															$activity.getSummary()
+														</div>
+													#end
+												#end
+											</div>
+										</div>
+									#end
+                                #end
+							#end
+						</div>
+					</div>
+				#end
+			</div>
+
+            <!-- Contact Center -->
+
+            <div class="site-section">
+			 	<div class="section-header" style="border-bottom: 6px solid #347D8D;margin-bottom: 0.6em;padding-left: 80px;">
+                    <span class="title-text" style="display: block;font-size: 1.5em;padding: 0.5em 0;">$languageUtil.get($locale, "contact-center")</span>
+                </div>
+                <div class="topic-wrapper" style="margin-bottom: 20px;padding-left: 125px;">
+                    <div class="topic-header" style="position: relative;">
+                        <span class="title-text"></span>
+                    </div>
+                    <div class="topic-details">
+						#set ($activityKey = 'com.liferay.portlet.social.model.SocialRelation')
+
+						#set ($activityList = $contacts)
+						#set ($activityType = $digestActivityFactory.getDigestActivityType($activityKey))
+						#set ($activityTypeName = $activityType.getLocalizedName($locale))
+
+						#set ($digestConfigurationActivityType = $digestConfiguration.getActivityTypesMap().get($activityKey))
+
+						#if ($digestConfigurationActivityType.isEnabled())
+                            <div class="details-area">
+                                <div class="details-title" style="font-weight: bolder;padding: 5px 0;">
+                                    <img class="topic-icon square-image" src="$activityType.getIconPath($company.getCompanyId())" alt="" style="height: 2.5em;width: 2.5em;position: absolute;left: -40px;top: 0.4em;">
+
+									$languageUtil.get($locale, "connections")
+                                </div>
+
+                                <div class="details-body">
+									#if(!$activityList || ($activityList.size() == 0))
+                                        <div class="detail-item">$languageUtil.get($locale, "no-new-activity")</div>
+									#else
+										#foreach($activity in $activityList)
+											#if ($activity.getType() == 1)
+												<div class="detail-item">
+													$activity.getLinkDisplay()
+												</div>
+												<div class="detail-item summary-text" style="text-indent: 25px;">
+													$activity.getSummary()
+												</div>
+											#end
+										#end
+									#end
+                                </div>
+                            </div>
+
+                            <div class="details-area">
+                                <div class="details-title" style="font-weight: bolder;padding: 5px 0;">
+                                    <img class="topic-icon square-image" src="$activityType.getIconPath($company.getCompanyId())" alt="" style="height: 2.5em;width: 2.5em;position: absolute;left: -40px;top: 0.4em;">
+
+									$languageUtil.get($locale, "followers")
+                                </div>
+                                <div class="details-body">
+									#if(!$activityList || ($activityList.size() == 0))
+                                        <div class="detail-item">$languageUtil.get($locale, "no-new-activity")</div>
+									#else
+										#foreach($activity in $activityList)
+											#if ($activity.getType() == 2)
+												<div class="detail-item">
+													$activity.getLinkDisplay()
+												</div>
+												<div class="detail-item summary-text" style="text-indent: 25px;">
+													$activity.getSummary()
+												</div>
+											#end
+										#end
+									#end
+                                </div>
+                            </div>
+						#end
+                    </div>
+                </div>
+            </div>
+
+			<!-- Contact Center -->
+
+		</div>
+		<div class="footer" style="background-color: #6FAE43;color: #FFF;font-size: 0.9em;padding: 1.3em 40px;">
+			$footerText
+		</div>
+	</div>
+</body>

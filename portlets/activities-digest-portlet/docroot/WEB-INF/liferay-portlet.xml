@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!DOCTYPE liferay-portlet-app PUBLIC "-//Liferay//DTD Portlet Application 6.1.0//EN" "http://www.liferay.com/dtd/liferay-portlet-app_6_1_0.dtd">
+
+<liferay-portlet-app>
+	<portlet>
+		<portlet-name>activities-digest</portlet-name>
+		<icon>/icon.png</icon>
+		<scheduler-entry>
+			<scheduler-event-listener-class>com.liferay.portlet.digest.activity.messaging.DigestActivityDailyListener</scheduler-event-listener-class>
+			<!--<trigger>
+				<cron>
+					<cron-trigger-value>0 2 * * *</cron-trigger-value>
+				</cron>
+			</trigger>-->
+			<trigger>
+				<simple>
+					<simple-trigger-value>5</simple-trigger-value>
+					<time-unit>minute</time-unit>
+				</simple>
+			</trigger>
+		</scheduler-entry>
+		<scheduler-entry>
+			<scheduler-event-listener-class>com.liferay.portlet.digest.activity.messaging.DigestActivityWeeklyListener</scheduler-event-listener-class>
+			<trigger>
+				<cron>
+					<cron-trigger-value>0 2 * * 6</cron-trigger-value>
+				</cron>
+			</trigger>
+		</scheduler-entry>
+		<scheduler-entry>
+			<scheduler-event-listener-class>com.liferay.portlet.digest.activity.messaging.DigestActivityInactiveUserListener</scheduler-event-listener-class>
+			<trigger>
+				<cron>
+					<cron-trigger-value>0 4 * * *</cron-trigger-value>
+				</cron>
+			</trigger>
+		</scheduler-entry>
+		<control-panel-entry-category>portal</control-panel-entry-category >
+		<control-panel-entry-weight>1</control-panel-entry-weight >
+		<control-panel-entry-class>com.liferay.portlet.digest.activity.portlet.ActivityDigestControlPanelEntry</control-panel-entry-class >
+		<header-portlet-css>/digest/css/main.css</header-portlet-css>
+		<header-portlet-javascript>/digest/js/header.js</header-portlet-javascript>
+		<footer-portlet-javascript>/digest/js/main.js</footer-portlet-javascript>
+		<css-class-wrapper>activities-digest-portlet</css-class-wrapper>
+		<system>true</system >
+	</portlet>
+	<portlet>
+		<portlet-name>my-activities-digest</portlet-name>
+		<icon>/icon.png</icon>
+		<control-panel-entry-category>my</control-panel-entry-category >
+		<control-panel-entry-weight>1</control-panel-entry-weight >
+		<control-panel-entry-class>com.liferay.portlet.digest.activity.portlet.ActivityDigestControlPanelEntry</control-panel-entry-class >
+		<header-portlet-css>/digest/css/main.css</header-portlet-css>
+		<header-portlet-javascript>/digest/js/header.js</header-portlet-javascript>
+		<footer-portlet-javascript>/digest/js/main.js</footer-portlet-javascript>
+		<css-class-wrapper>activities-digest-portlet</css-class-wrapper>
+		<system>true</system>
+	</portlet>
+	<portlet>
+		<portlet-name>site-activities-digest</portlet-name>
+		<icon>/icon.png</icon>
+		<control-panel-entry-category>content</control-panel-entry-category >
+		<control-panel-entry-weight>1</control-panel-entry-weight >
+		<control-panel-entry-class>com.liferay.portlet.digest.activity.portlet.ActivityDigestControlPanelEntry</control-panel-entry-class >
+		<header-portlet-css>/digest/css/main.css</header-portlet-css>
+		<header-portlet-javascript>/digest/js/header.js</header-portlet-javascript>
+		<footer-portlet-javascript>/digest/js/main.js</footer-portlet-javascript>
+		<css-class-wrapper>activities-digest-portlet</css-class-wrapper>
+		<system>true</system>
+	</portlet>
+	<role-mapper>
+		<role-name>administrator</role-name>
+		<role-link>Administrator</role-link>
+	</role-mapper>
+	<role-mapper>
+		<role-name>guest</role-name>
+		<role-link>Guest</role-link>
+	</role-mapper>
+	<role-mapper>
+		<role-name>power-user</role-name>
+		<role-link>Power User</role-link>
+	</role-mapper>
+	<role-mapper>
+		<role-name>user</role-name>
+		<role-link>User</role-link>
+	</role-mapper>
+</liferay-portlet-app>
