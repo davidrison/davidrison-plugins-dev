@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-
-<root>
-	<dynamic-element name="DigestActivity" type="selection_break" index-type="" repeatable="true">
-		<dynamic-element name="url" type="link_to_layout" index-type="" repeatable="false"></dynamic-element>
-		<dynamic-element name="title" type="text" index-type="" repeatable="false"></dynamic-element>
-		<dynamic-element name="summary" type="text" index-type="" repeatable="false"/>
-	</dynamic-element>
-</root>
