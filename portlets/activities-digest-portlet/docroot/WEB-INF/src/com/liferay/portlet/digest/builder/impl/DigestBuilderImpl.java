@@ -143,20 +143,9 @@ public class DigestBuilderImpl implements DigestBuilder {
 					continue;
 				}
 
-				// user digest configuration
+				// frequency
 
-				UserDigestConfiguration userDigestConfiguration =
-						UserDigestConfigurationLocalServiceUtil.fetchUserDigestConfigurationByUserId(user.getUserId());
-
-				if (Validator.isNull(userDigestConfiguration) ||
-						userDigestConfiguration.getFrequency() != frequency) {
-
-					if (_log.isInfoEnabled()) {
-						_log.info("User " + user.getFullName() + " frequency is not configured to run at this frequency " + DigestHelperUtil.getFrequencyAsString(frequency) + ", skipping.");
-					}
-
-					continue;
-				}
+				int digestConfigurationFrequency = DigestConstants.FREQUENCY_NONE;
 
 				// digest configuration
 
@@ -187,8 +176,7 @@ public class DigestBuilderImpl implements DigestBuilder {
 					// site digest configuration overrides portal settings
 
 					digestConfiguration =
-							DigestConfigurationLocalServiceUtil.fetchDigestConfigurationByScopeGroupId(
-									group.getGroupId());
+							DigestHelperUtil.getActiveSiteDigestConfiguration(group.getGroupId());
 
 					if (Validator.isNull(digestConfiguration)) {
 						digestConfiguration = _copyDigestConfiguration(portalDigestConfiguration, user);
@@ -199,6 +187,28 @@ public class DigestBuilderImpl implements DigestBuilder {
 
 					if (isSkipDigestConfiguration(digestConfiguration, user.getUserId(), 0)) {
 						_addEmptyDigest(user, group, digestConfiguration, siteDigestList);
+
+						continue;
+					}
+
+					// user digest configuration(frequency only)
+
+					UserDigestConfiguration userDigestConfiguration =
+							UserDigestConfigurationLocalServiceUtil.fetchUserDigestConfigurationByUserId(user.getUserId());
+
+					if (Validator.isNotNull(userDigestConfiguration)) {
+						digestConfigurationFrequency = userDigestConfiguration.getFrequency();
+					}
+					else {
+						digestConfigurationFrequency = digestConfiguration.getFrequency();
+					}
+
+					if (digestConfigurationFrequency != frequency) {
+
+						if (_log.isInfoEnabled()) {
+							_log.info("DigestConfiguration frequency " + digestConfigurationFrequency +
+									" is not configured to run at the specified frequency " + DigestHelperUtil.getFrequencyAsString(frequency) + ", skipping.");
+						}
 
 						continue;
 					}

@@ -202,7 +202,13 @@ public class DigestLocalServiceImpl extends DigestLocalServiceBaseImpl {
 			return;
 		}
 
-		DigestBuilderUtil.processDigest(users, frequency, PropsValues.DIGEST_ACTIVITY_TEMPLATE_ID);
+		String templateId = PropsValues.DIGEST_ACTIVITY_TEMPLATE_ID;
+
+		if (inactive) {
+			templateId = PropsValues.DIGEST_ACTIVITY_INACTIVE_USER_TEMPLATE_ID;
+		}
+
+		DigestBuilderUtil.processDigest(users, frequency, templateId);
 	}
 
 	private void _doProcessUsers(long companyId, int frequency, boolean inactive, DynamicQuery dynamicQuery) throws PortalException, SystemException {
