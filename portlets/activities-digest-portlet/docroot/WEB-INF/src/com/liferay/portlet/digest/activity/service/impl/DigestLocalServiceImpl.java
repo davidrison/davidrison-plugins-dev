@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.digest.activity.model.DigestConfiguration;
@@ -124,6 +125,20 @@ public class DigestLocalServiceImpl extends DigestLocalServiceBaseImpl {
 		dynamicQuery.add(lastLoginDate.lt(cal.getTime()));
 	}
 
+	private void _addUserCriteria(long companyId, DynamicQuery dynamicQuery) throws Exception {
+		Property companyIdProperty = PropertyFactoryUtil.forName("companyId");
+
+		dynamicQuery.add(
+			companyIdProperty.eq(companyId)
+		);
+
+		Property statusProperty = PropertyFactoryUtil.forName("status");
+
+		dynamicQuery.add(
+			statusProperty.eq(WorkflowConstants.STATUS_APPROVED)
+		);
+	}
+
 	private DynamicQuery _buildUserIdDynamicQuery(long companyId, boolean inactive) throws PortalException, SystemException {
 		DynamicQuery dynamicQuery = null;
 
@@ -141,9 +156,7 @@ public class DigestLocalServiceImpl extends DigestLocalServiceBaseImpl {
 
 			dynamicQuery.setProjection(projectionList);
 
-			Property property = PropertyFactoryUtil.forName("companyId");
-
-			dynamicQuery.add(property.eq(companyId));
+			_addUserCriteria(companyId, dynamicQuery);
 
 			if (inactive) {
 				_addInactiveUserCriteria(companyId, dynamicQuery);
@@ -157,7 +170,7 @@ public class DigestLocalServiceImpl extends DigestLocalServiceBaseImpl {
 		return dynamicQuery;
 	}
 
-	private DynamicQuery _buildUsersDynamicQuery(long companyId, long startUserId, long endUserId, boolean inactive) throws PortalException, SystemException {
+	private DynamicQuery _buildUserDynamicQuery(long companyId, long startUserId, long endUserId, boolean inactive) throws PortalException, SystemException {
 
 		DynamicQuery dynamicQuery = null;
 
@@ -170,9 +183,7 @@ public class DigestLocalServiceImpl extends DigestLocalServiceBaseImpl {
 			dynamicQuery.add(userIdProperty.ge(startUserId));
 			dynamicQuery.add(userIdProperty.lt(endUserId));
 
-			Property companyIdProperty = PropertyFactoryUtil.forName("companyId");
-
-			dynamicQuery.add(companyIdProperty.eq(companyId));
+			_addUserCriteria(companyId, dynamicQuery);
 
 			if (inactive) {
 				_addInactiveUserCriteria(companyId, dynamicQuery);
@@ -189,7 +200,7 @@ public class DigestLocalServiceImpl extends DigestLocalServiceBaseImpl {
 			long companyId, int frequency, boolean inactive, long startUserId, long endUserId)
 			throws Exception {
 
-		DynamicQuery dynamicQuery = _buildUsersDynamicQuery(companyId, startUserId, endUserId, inactive);
+		DynamicQuery dynamicQuery = _buildUserDynamicQuery(companyId, startUserId, endUserId, inactive);
 
 		Property property = PropertyFactoryUtil.forName("userId");
 
@@ -202,13 +213,7 @@ public class DigestLocalServiceImpl extends DigestLocalServiceBaseImpl {
 			return;
 		}
 
-		String templateId = PropsValues.DIGEST_ACTIVITY_TEMPLATE_ID;
-
-		if (inactive) {
-			templateId = PropsValues.DIGEST_ACTIVITY_INACTIVE_USER_TEMPLATE_ID;
-		}
-
-		DigestBuilderUtil.processDigest(users, frequency, templateId);
+		DigestBuilderUtil.processDigest(users, frequency, PropsValues.DIGEST_ACTIVITY_TEMPLATE_ID);
 	}
 
 	private void _doProcessUsers(long companyId, int frequency, boolean inactive, DynamicQuery dynamicQuery) throws PortalException, SystemException {

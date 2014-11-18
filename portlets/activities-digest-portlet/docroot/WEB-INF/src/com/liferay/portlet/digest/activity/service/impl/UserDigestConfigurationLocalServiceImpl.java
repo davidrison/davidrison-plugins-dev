@@ -90,7 +90,12 @@ public class UserDigestConfigurationLocalServiceImpl
 			userDigestConfiguration.setFrequency(frequency);
 			userDigestConfiguration.setModifiedDate(new Date());
 
-			return userDigestConfigurationPersistence.update(userDigestConfiguration, false);
+			try {
+				userDigestConfiguration = userDigestConfigurationPersistence.update(userDigestConfiguration, false);
+			}
+			finally {
+				userDigestConfigurationPersistence.clearCache(userDigestConfiguration);
+			}
 		}
 
 		return null;

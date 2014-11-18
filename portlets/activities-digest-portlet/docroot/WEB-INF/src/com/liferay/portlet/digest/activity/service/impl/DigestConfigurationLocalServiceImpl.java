@@ -14,10 +14,7 @@
 
 package com.liferay.portlet.digest.activity.service.impl;
 
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.*;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
@@ -174,7 +171,12 @@ public class DigestConfigurationLocalServiceImpl
 		digestConfiguration.setSummaryLength(summaryLength);
 		digestConfiguration.setUserId(userId);
 
-		digestConfigurationPersistence.update(digestConfiguration, false);
+		try {
+			digestConfigurationPersistence.update(digestConfiguration, false);
+		}
+		finally {
+			digestConfigurationPersistence.clearCache(digestConfiguration);
+		}
 
 		return digestConfiguration;
 	}
