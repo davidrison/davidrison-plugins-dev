@@ -172,7 +172,7 @@ public class DigestConfigurationImpl extends DigestConfigurationBaseImpl {
 
 			} else {
 				if (_log.isDebugEnabled()) {
-					_log.debug("Current Configuration does not allow for digest activities for group id " + getGroupId());
+					_log.debug("Current Configuration does not allow for digest activities for group id " + getScopeGroupId());
 				}
 			}
 		}

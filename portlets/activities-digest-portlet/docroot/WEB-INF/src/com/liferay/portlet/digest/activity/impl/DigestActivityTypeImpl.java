@@ -8,12 +8,13 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portlet.digest.activity.DigestActivityType;
 import com.liferay.portlet.digest.util.DigestHelperUtil;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-public class DigestActivityTypeImpl implements DigestActivityType {
+public class DigestActivityTypeImpl implements DigestActivityType, Serializable {
 
 	public DigestActivityTypeImpl(int id, String name, int[] actions) {
 		_id = id;
@@ -119,6 +120,41 @@ public class DigestActivityTypeImpl implements DigestActivityType {
 	}
 
 	private int _id;
+
 	private int[] _actions;
 	private String _name;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+
+		DigestActivityTypeImpl that = (DigestActivityTypeImpl) o;
+
+		if (_id != that._id) {
+			return false;
+		}
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		return _id;
+	}
+
+	@Override
+	public String toString() {
+		return "DigestActivityTypeImpl{" +
+				"_id=" + _id +
+				", _actions=" + Arrays.toString(_actions) +
+				", _name='" + _name + '\'' +
+				'}';
+	}
+
+	private static final long serialVersionUID = 3653056830649520125L;
+
 }

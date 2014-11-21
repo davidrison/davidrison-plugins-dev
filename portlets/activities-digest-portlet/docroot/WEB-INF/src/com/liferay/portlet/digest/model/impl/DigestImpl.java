@@ -11,10 +11,11 @@ import com.liferay.portlet.digest.activity.DigestActivity;
 import com.liferay.portlet.digest.activity.model.DigestConfiguration;
 import com.liferay.portlet.digest.model.Digest;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class DigestImpl implements Digest {
+public class DigestImpl implements Digest, Serializable {
 
 	public DigestImpl(DigestConfiguration digestConfiguration) {
 		_digestConfiguration = digestConfiguration;
@@ -98,5 +99,45 @@ public class DigestImpl implements Digest {
 	private User _user;
 
 	private static final Log _log = LogFactoryUtil.getLog(DigestImpl.class);
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+
+		DigestImpl digest = (DigestImpl) o;
+
+		if (_group != null ? !_group.equals(digest._group) : digest._group != null) {
+			return false;
+		}
+		if (_user != null ? !_user.equals(digest._user) : digest._user != null) {
+			return false;
+		}
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = _group != null ? _group.hashCode() : 0;
+		result = 31 * result + (_user != null ? _user.hashCode() : 0);
+		return result;
+	}
+
+	@Override
+	public String toString() {
+		return "DigestImpl{" +
+				"_activities=" + _activities +
+				", _digestConfiguration=" + _digestConfiguration +
+				", _group=" + _group +
+				", _user=" + _user +
+				'}';
+	}
+
+	private static final long serialVersionUID = 5602250253794953970L;
 
 }

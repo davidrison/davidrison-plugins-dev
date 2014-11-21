@@ -163,20 +163,6 @@ public class ActivityDigestPortlet extends MVCPortlet {
 		//writeJSON(actionRequest, actionResponse, jsonObject);
 	}
 
-	public void populateDefaultUserConfiguration(ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-				WebKeys.THEME_DISPLAY);
-
-		int frequency = ParamUtil.getInteger(
-				actionRequest, "digestFrequency", DigestConstants.FREQUENCY_NONE);
-
-		UserDigestConfigurationLocalServiceUtil.populateDefaultUserConfigurations(
-				themeDisplay.getCompanyId(), themeDisplay.getScopeGroupId(), frequency);
-
-	}
-
 	public void updateUserDigestConfiguration(ActionRequest actionRequest, ActionResponse actionResponse)
 			throws Exception {
 

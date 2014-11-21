@@ -66,22 +66,6 @@ public class UserDigestConfigurationLocalServiceImpl
 		return userDigestConfigurationPersistence.update(userDigestConfiguration, false);
 	}
 
-	public void populateDefaultUserConfigurations(long companyId, long groupId, int frequency) throws PortalException, SystemException {
-		Group group = GroupLocalServiceUtil.fetchGroup(groupId);
-
-		long[] userIds = UserLocalServiceUtil.getGroupUserIds(group.getGroupId());
-
-		for (int i = 0; i < _MAX_USERS; i++) {
-			long userId = userIds[i];
-
-			if (Validator.isNull(
-					userDigestConfigurationPersistence.fetchByUserId(userId))) {
-				addUserDigestConfiguration(companyId, userId, frequency);
-			}
-
-		}
-	}
-
 	public UserDigestConfiguration updateUserDigestConfiguration(long id, long userId, int frequency) throws PortalException, SystemException {
 
 		UserDigestConfiguration userDigestConfiguration = userDigestConfigurationPersistence.fetchByUserId(userId);

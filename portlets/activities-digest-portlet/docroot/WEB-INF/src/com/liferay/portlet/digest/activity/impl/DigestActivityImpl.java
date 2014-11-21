@@ -9,9 +9,10 @@ import com.liferay.portal.model.User;
 import com.liferay.portlet.digest.activity.DigestActivity;
 import com.liferay.portlet.digest.activity.DigestActivityType;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class DigestActivityImpl implements DigestActivity {
+public class DigestActivityImpl implements DigestActivity, Serializable {
 
 	public DigestActivityImpl() {}
 
@@ -202,5 +203,49 @@ public class DigestActivityImpl implements DigestActivity {
 	private User _user;
 
 	private static final Log _log = LogFactoryUtil.getLog(DigestActivityImpl.class);
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+
+		DigestActivityImpl that = (DigestActivityImpl) o;
+
+		if (_id != that._id) {
+			return false;
+		}
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		return (int) (_id ^ (_id >>> 32));
+	}
+
+	@Override
+	public String toString() {
+		return "DigestActivityImpl{" +
+				"_createDate=" + _createDate +
+				", _extraData='" + _extraData + '\'' +
+				", _groupId=" + _groupId +
+				", _id=" + _id +
+				", _imageURL='" + _imageURL + '\'' +
+				", _link='" + _link + '\'' +
+				", _linkDisplay='" + _linkDisplay + '\'' +
+				", _name='" + _name + '\'' +
+				", _summary='" + _summary + '\'' +
+				", _type=" + _type +
+				", _activityType=" + _activityType +
+				", _uuid='" + _uuid + '\'' +
+				", _user=" + _user +
+				'}';
+	}
+
+	private static final long serialVersionUID = 4272671151912806824L;
 
 }

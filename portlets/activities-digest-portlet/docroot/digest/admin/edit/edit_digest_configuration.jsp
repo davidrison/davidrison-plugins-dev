@@ -2,10 +2,6 @@
 	name="updateDigestConfiguration"
 	var="updateDigestConfigurationURL" />
 
-<portlet:actionURL
-	name="populateDefaultUserConfiguration"
-	var="populateDefaultUserConfigurationURL"/>
-
 <%
 	DigestConfiguration digestConfiguration = null;
 
@@ -32,6 +28,13 @@
 			portalDigestConfiguration.getEnabled();
 
 	boolean uiEnabled = false;
+
+	int digestFrequency = DigestConstants.FREQUENCY_NONE;
+
+	// https://jira.netacad.net/jira/browse/NEX-8471
+	if (Validator.isNotNull(portalDigestConfiguration.getFrequency())) {
+		digestFrequency = portalDigestConfiguration.getFrequency();
+	}
 %>
 
 <c:choose>
@@ -97,7 +100,7 @@
 
 				<c:choose>
 					<c:when test="<%= !category.equals(PortletCategoryKeys.MY) %>">
-						<aui:fieldset name="digest-enabled">
+						<aui:fieldset name="digest-enabled" >
 							<aui:input label="enable-digest" name="digestEnabled" type="checkbox" checked="<%= digestEnabled %>" />
 						</aui:fieldset>
 					</c:when>
@@ -110,23 +113,22 @@
 					<aui:select name="digestFrequency" label="digest-frequency">
 						<aui:option label="<%= DigestHelperUtil.getFrequencyAsString(DigestConstants.FREQUENCY_NONE) %>"
 									value="<%= DigestConstants.FREQUENCY_NONE %>"
-									selected="<%= digestConfiguration.getFrequency() == DigestConstants.FREQUENCY_NONE%>" />
+									selected="<%= digestFrequency == DigestConstants.FREQUENCY_NONE%>" />
 						<aui:option label="<%= DigestHelperUtil.getFrequencyAsString(DigestConstants.FREQUENCY_DAILY) %>"
 									value="<%= DigestConstants.FREQUENCY_DAILY %>"
-									selected="<%= digestConfiguration.getFrequency() == DigestConstants.FREQUENCY_DAILY%>" />
+									selected="<%= digestFrequency == DigestConstants.FREQUENCY_DAILY%>" />
 						<aui:option label="<%= DigestHelperUtil.getFrequencyAsString(DigestConstants.FREQUENCY_WEEKLY) %>"
 									value="<%= DigestConstants.FREQUENCY_WEEKLY %>"
-									selected="<%= digestConfiguration.getFrequency() == DigestConstants.FREQUENCY_WEEKLY%>" />
+									selected="<%= digestFrequency == DigestConstants.FREQUENCY_WEEKLY%>" />
 					</aui:select>
-
 					<c:if test="<%= category.equals(PortletCategoryKeys.PORTAL )%>">
+
+
 						<aui:input	name="digestSummaryLength"
 									  label="digest-summary-length"
 									  type="text"
 									  value="<%= digestConfiguration.getSummaryLength()%>" />
-					</c:if>
 
-					<c:if test="<%= category.equals(PortletCategoryKeys.PORTAL)%>">
 						<aui:input	name="digestInactiveUserNumberDays"
 									  label="digest-inactive-user-number-days"
 									  type="text"
@@ -135,91 +137,89 @@
 				</aui:fieldset>
 
 				<c:if test="<%= !category.equals(PortletCategoryKeys.MY) %>">
-					<ol id="activityTypesList">
-						<%
-							List<DigestActivityType> availableDigestActivityTypes =
-									DigestHelperUtil.getAvailableDigestActivityTypes();
+					<%
+						List<DigestActivityType> availableDigestActivityTypes =
+								DigestHelperUtil.getAvailableDigestActivityTypes();
 
-							List<DigestActivityType> digestActivityTypes =
-									digestConfiguration.getActivityTypesList();
+						List<DigestActivityType> digestActivityTypes =
+								digestConfiguration.getActivityTypesList();
 
-							for (DigestActivityType digestActivityType : availableDigestActivityTypes) {
-								List<Integer> actionsList = digestActivityType.getActionsAsList();
+						for (DigestActivityType digestActivityType : availableDigestActivityTypes) {
+							List<Integer> actionsList = digestActivityType.getActionsAsList();
 
-								Map<String, DigestActivityType> portalActivityTypesMap =
-										portalDigestConfiguration.getActivityTypesMap();
+							Map<String, DigestActivityType> portalActivityTypesMap =
+									portalDigestConfiguration.getActivityTypesMap();
 
-								if (category.equals(PortletCategoryKeys.CONTENT)) {
-									// if action is disabled in portal, disable in site ui
+							if (category.equals(PortletCategoryKeys.CONTENT)) {
+								// if action is disabled in portal, disable in site ui
 
-									DigestActivityType portalDigestActivityType =
-											portalActivityTypesMap.get(digestActivityType.getName());
+								DigestActivityType portalDigestActivityType =
+										portalActivityTypesMap.get(digestActivityType.getName());
 
-									if (portalDigestActivityType.getActionsAsList().isEmpty()) {
-										continue;
-									}
+								if (portalDigestActivityType.getActionsAsList().isEmpty()) {
+									continue;
 								}
-
-						%>
-						<li id="digestActivityType.getName()">
-							<aui:field-wrapper
-									label="<%= digestActivityType.getLocalizedName(themeDisplay.getLocale()) %>"
-									name="<%= digestActivityType.getName() %>"
-									inlineField="false"
-									inlineLabel="false">
-								<%
-									for (Integer action : actionsList) {
-										boolean checked = false;
-										boolean disabled = false;
-
-										if (category.equals(PortletCategoryKeys.CONTENT)) {
-											// if action is disabled in portal, disable in site ui
-
-											DigestActivityType portalDigestActivityType =
-													portalActivityTypesMap.get(digestActivityType.getName());
-
-											if (!portalDigestActivityType.getActionsAsList().contains(action)) {
-												disabled = true;
-												checked = false;
-												continue;
-											}
-										}
-
-										String activityTypeActionKey = digestActivityType.getName() + "_ACTION_" + action;
-
-										Map<String, DigestActivityType> digestActivityTypeMap =
-												digestConfiguration.getActivityTypesMap();
-
-										DigestActivityType activeDigestActivityType =
-												digestActivityTypeMap.get(digestActivityType.getName());
-
-										if (Validator.isNotNull(activeDigestActivityType)) {
-											List<Integer> activeActions =
-													activeDigestActivityType.getActionsAsList();
-											for (Integer activeAction : activeActions) {
-												if (activeAction.intValue() == action.intValue()) {
-													checked = true;
-												}
-											}
-										}
-								%>
-
-								<aui:input	name="<%= activityTypeActionKey %>"
-											  type="checkbox"
-											  label="<%= DigestActivityFactoryUtil.getDigestActivityConverter(digestActivityType.getName()).getActionName(action) %>"
-											  checked="<%= checked %>"
-											  disabled="<%= disabled %>"/>
-								<%
-
-									}
-								%>
-							</aui:field-wrapper>
-						</li>
-						<%
 							}
 
-						%>
-					</ol>
+					%>
+						<aui:field-wrapper
+								label="<%= digestActivityType.getLocalizedName(themeDisplay.getLocale()) %>"
+								name="<%= digestActivityType.getName() %>"
+								inlineField="false"
+								inlineLabel="false">
+							<%
+								for (Integer action : actionsList) {
+									boolean checked = false;
+									boolean disabled = false;
+
+									if (category.equals(PortletCategoryKeys.CONTENT)) {
+										// if action is disabled in portal, disable in site ui
+
+										DigestActivityType portalDigestActivityType =
+												portalActivityTypesMap.get(digestActivityType.getName());
+
+										if (!portalDigestActivityType.getActionsAsList().contains(action)) {
+											disabled = true;
+											checked = false;
+											continue;
+										}
+									}
+
+									String activityTypeActionKey = digestActivityType.getName() + "_ACTION_" + action;
+
+									Map<String, DigestActivityType> digestActivityTypeMap =
+											digestConfiguration.getActivityTypesMap();
+
+									DigestActivityType activeDigestActivityType =
+											digestActivityTypeMap.get(digestActivityType.getName());
+
+									if (Validator.isNotNull(activeDigestActivityType)) {
+										List<Integer> activeActions =
+												activeDigestActivityType.getActionsAsList();
+										for (Integer activeAction : activeActions) {
+											if (activeAction.intValue() == action.intValue()) {
+												checked = true;
+											}
+										}
+									}
+							%>
+
+							<aui:input	name="<%= activityTypeActionKey %>"
+										  type="checkbox"
+										  label="<%= DigestActivityFactoryUtil.getDigestActivityConverter(digestActivityType.getName()).getActionName(action) %>"
+										  checked="<%= checked %>"
+										  disabled="<%= disabled %>"/>
+
+
+							<%
+
+								}
+							%>
+						</aui:field-wrapper>
+					<%
+						}
+
+					%>
 				</c:if>
 
 				<aui:button-row>
@@ -228,28 +228,6 @@
 				</aui:button-row>
 			</aui:form>
 		</aui:fieldset>
-
-		<c:if test="<%= category.equals(PortletCategoryKeys.CONTENT )%>">
-			<aui:fieldset label="populate-user-defaults">
-				<aui:form action="<%= populateDefaultUserConfigurationURL.toString() %>" method="post" name="fm2" useNamespace="true">
-					<aui:select name="digestFrequency" label="digest-frequency">
-						<aui:option label="<%= DigestHelperUtil.getFrequencyAsString(DigestConstants.FREQUENCY_NONE) %>"
-									value="<%= DigestConstants.FREQUENCY_NONE %>"
-									selected="<%= digestConfiguration.getFrequency() == DigestConstants.FREQUENCY_NONE%>" />
-						<aui:option label="<%= DigestHelperUtil.getFrequencyAsString(DigestConstants.FREQUENCY_DAILY) %>"
-									value="<%= DigestConstants.FREQUENCY_DAILY %>"
-									selected="<%= digestConfiguration.getFrequency() == DigestConstants.FREQUENCY_DAILY%>" />
-						<aui:option label="<%= DigestHelperUtil.getFrequencyAsString(DigestConstants.FREQUENCY_WEEKLY) %>"
-									value="<%= DigestConstants.FREQUENCY_WEEKLY %>"
-									selected="<%= digestConfiguration.getFrequency() == DigestConstants.FREQUENCY_WEEKLY%>" />
-					</aui:select>
-
-					<aui:button-row>
-						<aui:button name="populateUserDefaults" type="submit" value="Populate"/>
-					</aui:button-row>
-				</aui:form>
-			</aui:fieldset>
-		</c:if>
 	</c:otherwise>
 </c:choose>
 

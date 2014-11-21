@@ -121,13 +121,9 @@ public class UserDigestConfigurationLocalServiceClpInvoker {
 
 		_methodParameterTypes49 = new String[] { "long", "long", "int" };
 
-		_methodName50 = "populateDefaultUserConfigurations";
+		_methodName50 = "updateUserDigestConfiguration";
 
 		_methodParameterTypes50 = new String[] { "long", "long", "int" };
-
-		_methodName51 = "updateUserDigestConfiguration";
-
-		_methodParameterTypes51 = new String[] { "long", "long", "int" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -245,15 +241,6 @@ public class UserDigestConfigurationLocalServiceClpInvoker {
 
 		if (_methodName50.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes50, parameterTypes)) {
-			UserDigestConfigurationLocalServiceUtil.populateDefaultUserConfigurations(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue(),
-				((Integer)arguments[2]).intValue());
-
-			return null;
-		}
-
-		if (_methodName51.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes51, parameterTypes)) {
 			return UserDigestConfigurationLocalServiceUtil.updateUserDigestConfiguration(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Integer)arguments[2]).intValue());
@@ -304,6 +291,4 @@ public class UserDigestConfigurationLocalServiceClpInvoker {
 	private String[] _methodParameterTypes49;
 	private String _methodName50;
 	private String[] _methodParameterTypes50;
-	private String _methodName51;
-	private String[] _methodParameterTypes51;
 }

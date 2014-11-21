@@ -258,11 +258,6 @@ public interface UserDigestConfigurationLocalService extends BaseLocalService,
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException;
 
-	public void populateDefaultUserConfigurations(long companyId, long groupId,
-		int frequency)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException;
-
 	public com.liferay.portlet.digest.activity.model.UserDigestConfiguration updateUserDigestConfiguration(
 		long id, long userId, int frequency)
 		throws com.liferay.portal.kernel.exception.PortalException,

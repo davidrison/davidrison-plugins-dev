@@ -15,7 +15,6 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portlet.digest.activity.DigestActivity;
 import com.liferay.portlet.digest.activity.DigestActivityType;
 import com.liferay.portlet.digest.activity.model.DigestConfiguration;
 import com.liferay.portlet.digest.activity.model.UserDigestConfiguration;
@@ -143,10 +142,6 @@ public class DigestBuilderImpl implements DigestBuilder {
 					continue;
 				}
 
-				// frequency
-
-				int digestConfigurationFrequency = DigestConstants.FREQUENCY_NONE;
-
 				// digest configuration
 
 				DigestConfiguration portalDigestConfiguration =
@@ -185,31 +180,7 @@ public class DigestBuilderImpl implements DigestBuilder {
 						digestConfiguration = _copyDigestConfiguration(digestConfiguration, user);
 					}
 
-					if (isSkipDigestConfiguration(digestConfiguration, user.getUserId(), 0)) {
-						_addEmptyDigest(user, group, digestConfiguration, siteDigestList);
-
-						continue;
-					}
-
-					// user digest configuration(frequency only)
-
-					UserDigestConfiguration userDigestConfiguration =
-							UserDigestConfigurationLocalServiceUtil.fetchUserDigestConfigurationByUserId(user.getUserId());
-
-					if (Validator.isNotNull(userDigestConfiguration)) {
-						digestConfigurationFrequency = userDigestConfiguration.getFrequency();
-					}
-					else {
-						digestConfigurationFrequency = digestConfiguration.getFrequency();
-					}
-
-					if (digestConfigurationFrequency != frequency) {
-
-						if (_log.isInfoEnabled()) {
-							_log.info("DigestConfiguration frequency " + digestConfigurationFrequency +
-									" is not configured to run at the specified frequency " + DigestHelperUtil.getFrequencyAsString(frequency) + ", skipping.");
-						}
-
+					if (isSkipDigestConfiguration(digestConfiguration, frequency, user.getUserId(), group.getGroupId())) {
 						continue;
 					}
 
@@ -284,6 +255,14 @@ public class DigestBuilderImpl implements DigestBuilder {
 						stopWatch2.start();
 
 						_log.debug("Merging digest template for user " + user.getFullName());
+					}
+
+					if (siteDigestList.size() == 0) {
+						if (_log.isInfoEnabled()) {
+							// Per https://jira.netacad.net/jira/browse/NEX-8321
+							_log.info("No Activities found for any digest for user " + user.getFullName() + ", not sending email.");
+						}
+						continue;
 					}
 
 					String html = DigestActivityTemplateProcessor.mergeDigest(digestConfiguration.getCompanyId(),
@@ -382,7 +361,7 @@ public class DigestBuilderImpl implements DigestBuilder {
 	}
 
 	protected boolean isSkipDigestConfiguration(
-			DigestConfiguration digestConfiguration, long scopeUserId, long scopeGroupId) throws Exception {
+			DigestConfiguration digestConfiguration, int frequency, long scopeUserId, long scopeGroupId) throws Exception {
 
 		User scopeUser = UserLocalServiceUtil.fetchUser(scopeUserId);
 
@@ -398,7 +377,54 @@ public class DigestBuilderImpl implements DigestBuilder {
 			return true;
 		}
 
-		if (digestConfiguration.getFrequency() == DigestConstants.FREQUENCY_NONE) {
+		// configuration frequency
+
+		int digestConfigurationFrequency = DigestConstants.FREQUENCY_NONE;
+
+		// portal digest configuration
+
+		DigestConfiguration portalDigestConfiguration =
+				DigestHelperUtil.getActivePortalDigestConfiguration(digestConfiguration.getCompanyId());
+
+		// site digest configuration
+
+		DigestConfiguration siteDigestConfiguration =
+				DigestHelperUtil.getActiveSiteDigestConfiguration(scopeGroupId);
+
+		if (Validator.isNull(siteDigestConfiguration)) {
+			// site is not enabled by default, so no entry means not enabled
+			if (_log.isInfoEnabled()) {
+				_log.info("DigestConfiguration group " + scopeGroupId +
+						" does not have an entry, disabled by default, skipping.");
+			}
+
+			return true;
+		}
+
+		// user digest configuration(frequency only)
+
+		UserDigestConfiguration userDigestConfiguration =
+				UserDigestConfigurationLocalServiceUtil.fetchUserDigestConfigurationByUserId(scopeUserId);
+
+		if (Validator.isNotNull(userDigestConfiguration)) {
+			digestConfigurationFrequency = userDigestConfiguration.getFrequency();
+		}
+		else {
+			// https://jira.netacad.net/jira/browse/NEX-8471
+			digestConfigurationFrequency = portalDigestConfiguration.getFrequency();
+		}
+
+		if (digestConfigurationFrequency != frequency) {
+
+			if (_log.isInfoEnabled()) {
+				_log.info("DigestConfiguration frequency " + digestConfigurationFrequency +
+						" is not configured to run at the specified frequency " + DigestHelperUtil.getFrequencyAsString(frequency) + ", skipping.");
+			}
+
+			return true;
+		}
+
+		if (digestConfigurationFrequency == DigestConstants.FREQUENCY_NONE) {
 			if (_log.isInfoEnabled()) {
 				_log.info("Digest Configuration (" + digestConfiguration.getId() + ") is set to NOT run, skipping..");
 			}
@@ -469,29 +495,6 @@ public class DigestBuilderImpl implements DigestBuilder {
 
 	public void setDigestActivityProcessors(Map<String, DigestActivityProcessor> digestActivityParsers) {
 		_digestActivityProcessors = digestActivityParsers;
-	}
-
-	private void _addEmptyDigest(User user, Group group, DigestConfiguration digestConfiguration, List<Digest> siteDigestList) throws Exception {
-		if (Validator.isNotNull(siteDigestList)) {
-			Digest digest = new DigestImpl(digestConfiguration);
-
-			digest.setGroup(group);
-			digest.setUser(user);
-
-			Map<String, List<DigestActivity>> digestActivityMap =
-					new HashMap<String, List<DigestActivity>>();
-
-			List<DigestActivityType> digestActivityTypeList =
-					DigestHelperUtil.getAvailableDigestActivityTypes();
-
-			for (DigestActivityType digestActivityType : digestActivityTypeList) {
-				digestActivityMap.put(digestActivityType.getName(), new ArrayList<DigestActivity>());
-			}
-
-			digest.setActivities(digestActivityMap);
-
-			siteDigestList.add(digest);
-		}
 	}
 
 	private DigestConfiguration _copyDigestConfiguration(DigestConfiguration digestConfiguration, User user) throws Exception {

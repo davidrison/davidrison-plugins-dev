@@ -15,22 +15,19 @@
 
 	long userDigestConfigurationId = 0;
 
-	int userDigestFrequency = DigestConstants.FREQUENCY_NONE;
+	int digestFrequency = DigestConstants.FREQUENCY_NONE;
 
-	// check site first
-	if (Validator.isNotNull(siteDigestConfiguration)) {
-		userDigestFrequency = siteDigestConfiguration.getFrequency();
-	}
-	// otherwise, portal
-	else if (Validator.isNotNull(portalDigestConfiguration.getFrequency())) {
-		userDigestFrequency = portalDigestConfiguration.getFrequency();
+
+	// https://jira.netacad.net/jira/browse/NEX-8471
+	if (Validator.isNotNull(portalDigestConfiguration.getFrequency())) {
+		digestFrequency = portalDigestConfiguration.getFrequency();
 	}
 
 	// if user has configuraiton, use frequency
 
 	if (Validator.isNotNull(userDigestConfiguration)) {
 		userDigestConfigurationId = userDigestConfiguration.getId();
-		userDigestFrequency = userDigestConfiguration.getFrequency();
+		digestFrequency = userDigestConfiguration.getFrequency();
 	}
 %>
 
@@ -43,13 +40,13 @@
 		<aui:select name="digestFrequency" label="digest-frequency">
 			<aui:option label="<%= DigestHelperUtil.getFrequencyAsString(DigestConstants.FREQUENCY_NONE) %>"
 						value="<%= DigestConstants.FREQUENCY_NONE %>"
-						selected="<%= userDigestFrequency == DigestConstants.FREQUENCY_NONE %>" />
+						selected="<%= digestFrequency == DigestConstants.FREQUENCY_NONE %>" />
 			<aui:option label="<%= DigestHelperUtil.getFrequencyAsString(DigestConstants.FREQUENCY_DAILY) %>"
 						value="<%= DigestConstants.FREQUENCY_DAILY %>"
-						selected="<%= userDigestFrequency == DigestConstants.FREQUENCY_DAILY %>" />
+						selected="<%= digestFrequency == DigestConstants.FREQUENCY_DAILY %>" />
 			<aui:option label="<%= DigestHelperUtil.getFrequencyAsString(DigestConstants.FREQUENCY_WEEKLY) %>"
 						value="<%= DigestConstants.FREQUENCY_WEEKLY %>"
-						selected="<%= userDigestFrequency == DigestConstants.FREQUENCY_WEEKLY %>" />
+						selected="<%= digestFrequency == DigestConstants.FREQUENCY_WEEKLY %>" />
 		</aui:select>
 	</aui:fieldset>
 

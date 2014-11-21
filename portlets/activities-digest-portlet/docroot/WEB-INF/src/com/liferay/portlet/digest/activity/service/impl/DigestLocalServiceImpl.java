@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
@@ -85,7 +86,8 @@ public class DigestLocalServiceImpl extends DigestLocalServiceBaseImpl {
 		try {
 			DigestConfiguration portalDigestConfiguration = DigestHelperUtil.getActivePortalDigestConfiguration(companyId);
 
-			if (!portalDigestConfiguration.isEnabled()) {
+			if (!portalDigestConfiguration.isEnabled() ||
+				portalDigestConfiguration.getFrequency() != frequency) {
 				if (_log.isInfoEnabled()) {
 					_log.info("Portal Digest Configuration is not enabled, exiting.");
 				}
@@ -223,24 +225,27 @@ public class DigestLocalServiceImpl extends DigestLocalServiceBaseImpl {
 			List<Object[]> results = UserLocalServiceUtil.dynamicQuery(
 					dynamicQuery);
 
-			Object[] minAndMaxUserIds = results.get(0);
+			if (Validator.isNotNull(results) && results.size() > 0) {
+				Object[] minAndMaxUserIds = results.get(0);
 
-			if ((minAndMaxUserIds[0] == null) || (minAndMaxUserIds[1] == null)) {
-				return;
+				if ((minAndMaxUserIds[0] == null) || (minAndMaxUserIds[1] == null)) {
+					return;
+				}
+
+				long minUserId = (Long) minAndMaxUserIds[0];
+				long maxUserId = (Long) minAndMaxUserIds[1];
+
+				long startUserId = minUserId;
+				long endUserId = startUserId + _DEFAULT_INTERVAL;
+
+				while (startUserId <= maxUserId) {
+					_processDigest(companyId, frequency, inactive, startUserId, endUserId);
+
+					startUserId = endUserId;
+					endUserId += _DEFAULT_INTERVAL;
+				}
 			}
 
-			long minUserId = (Long) minAndMaxUserIds[0];
-			long maxUserId = (Long) minAndMaxUserIds[1];
-
-			long startUserId = minUserId;
-			long endUserId = startUserId + _DEFAULT_INTERVAL;
-
-			while (startUserId <= maxUserId) {
-				_processDigest(companyId, frequency, inactive, startUserId, endUserId);
-
-				startUserId = endUserId;
-				endUserId += _DEFAULT_INTERVAL;
-			}
 		}
 		catch (Throwable t) {
 			throw new PortalException(t);

@@ -291,14 +291,6 @@ public class UserDigestConfigurationLocalServiceUtil {
 				   .addUserDigestConfiguration(companyId, userId, frequency);
 	}
 
-	public static void populateDefaultUserConfigurations(long companyId,
-		long groupId, int frequency)
-		throws com.liferay.portal.kernel.exception.PortalException,
-			com.liferay.portal.kernel.exception.SystemException {
-		getService()
-			.populateDefaultUserConfigurations(companyId, groupId, frequency);
-	}
-
 	public static com.liferay.portlet.digest.activity.model.UserDigestConfiguration updateUserDigestConfiguration(
 		long id, long userId, int frequency)
 		throws com.liferay.portal.kernel.exception.PortalException,
