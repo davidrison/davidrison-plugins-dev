@@ -110,19 +110,18 @@
 				</c:choose>
 
 				<aui:fieldset column="true">
-					<aui:select name="digestFrequency" label="digest-frequency">
-						<aui:option label="<%= DigestHelperUtil.getFrequencyAsString(DigestConstants.FREQUENCY_NONE) %>"
-									value="<%= DigestConstants.FREQUENCY_NONE %>"
-									selected="<%= digestFrequency == DigestConstants.FREQUENCY_NONE%>" />
-						<aui:option label="<%= DigestHelperUtil.getFrequencyAsString(DigestConstants.FREQUENCY_DAILY) %>"
-									value="<%= DigestConstants.FREQUENCY_DAILY %>"
-									selected="<%= digestFrequency == DigestConstants.FREQUENCY_DAILY%>" />
-						<aui:option label="<%= DigestHelperUtil.getFrequencyAsString(DigestConstants.FREQUENCY_WEEKLY) %>"
-									value="<%= DigestConstants.FREQUENCY_WEEKLY %>"
-									selected="<%= digestFrequency == DigestConstants.FREQUENCY_WEEKLY%>" />
-					</aui:select>
 					<c:if test="<%= category.equals(PortletCategoryKeys.PORTAL )%>">
-
+						<aui:select name="digestFrequency" label="digest-frequency">
+							<aui:option label="<%= DigestHelperUtil.getFrequencyAsString(DigestConstants.FREQUENCY_NONE) %>"
+										value="<%= DigestConstants.FREQUENCY_NONE %>"
+										selected="<%= digestFrequency == DigestConstants.FREQUENCY_NONE%>" />
+							<aui:option label="<%= DigestHelperUtil.getFrequencyAsString(DigestConstants.FREQUENCY_DAILY) %>"
+										value="<%= DigestConstants.FREQUENCY_DAILY %>"
+										selected="<%= digestFrequency == DigestConstants.FREQUENCY_DAILY%>" />
+							<aui:option label="<%= DigestHelperUtil.getFrequencyAsString(DigestConstants.FREQUENCY_WEEKLY) %>"
+										value="<%= DigestConstants.FREQUENCY_WEEKLY %>"
+										selected="<%= digestFrequency == DigestConstants.FREQUENCY_WEEKLY%>" />
+						</aui:select>
 
 						<aui:input	name="digestSummaryLength"
 									  label="digest-summary-length"

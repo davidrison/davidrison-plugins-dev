@@ -86,8 +86,7 @@ public class DigestLocalServiceImpl extends DigestLocalServiceBaseImpl {
 		try {
 			DigestConfiguration portalDigestConfiguration = DigestHelperUtil.getActivePortalDigestConfiguration(companyId);
 
-			if (!portalDigestConfiguration.isEnabled() ||
-				portalDigestConfiguration.getFrequency() != frequency) {
+			if (!portalDigestConfiguration.isEnabled()) {
 				if (_log.isInfoEnabled()) {
 					_log.info("Portal Digest Configuration is not enabled, exiting.");
 				}

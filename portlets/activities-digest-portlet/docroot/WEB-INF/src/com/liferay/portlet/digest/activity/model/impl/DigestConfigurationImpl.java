@@ -137,6 +137,24 @@ public class DigestConfigurationImpl extends DigestConfigurationBaseImpl {
 		return _digestActivityTypesMap;
 	}
 
+	@Override
+	public int getFrequency() {
+		if (isGroupDigest()) {
+			try {
+				// site/group must use the setting from portal
+
+				return getPortal().getFrequency();
+			}
+			catch (Throwable t) {
+				if (_log.isDebugEnabled()) {
+					_log.debug("Unable to retrieve portal frequency", t);
+				}
+			}
+		}
+
+		return super.getFrequency();
+	}
+
 	public String getFrequencyAsString() throws Exception {
 		return DigestHelperUtil.getFrequencyAsString(getFrequency());
 	}
@@ -207,12 +225,29 @@ public class DigestConfigurationImpl extends DigestConfigurationBaseImpl {
 		return digestConfiguration;
 	}
 
+	protected DigestConfiguration getPortal() throws Exception {
+		if (Validator.isNull(_portal)) {
+			try {
+				_portal = DigestHelperUtil.getActivePortalDigestConfiguration(getCompanyId());
+			}
+			catch (Throwable t) {
+				if (_log.isDebugEnabled()) {
+					_log.debug("Unable to retrieve portal digest configuration, using current configuration.");
+				}
+				_portal = this;
+			}
+		}
+
+		return _portal;
+	}
+
 	private Date _startDate;
 	private Date _endDate;
 
 	private List<DigestActivityType> _digestActivityTypes;
 	private Map<String, DigestActivityType> _digestActivityTypesMap;
 	private String _originalDigestActivityTypes;
+	private DigestConfiguration _portal;
 
 	private static final Log _log = LogFactoryUtil.getLog(DigestConfigurationImpl.class);
 

@@ -52,13 +52,13 @@ public class DigestBuilderImpl implements DigestBuilder {
 
 							stopWatch.start();
 
-							_log.debug("Building Digest...");
+							_log.debug("Building Digest for company id " + companyId + "...");
 						}
 
 						DigestLocalServiceUtil.processUsers(companyId, frequency);
 
-						if (_log.isInfoEnabled()) {
-							_log.info("Digest Builder has completed execution in " + stopWatch.getTime() + " ms.");
+						if (_log.isDebugEnabled()) {
+							_log.debug("Digest Builder has completed execution for company id " + companyId + " in " + stopWatch.getTime() + " ms.");
 						}
 					}
 				}
@@ -101,8 +101,8 @@ public class DigestBuilderImpl implements DigestBuilder {
 
 						DigestLocalServiceUtil.processInactiveUsers(companyId, frequency);
 
-						if (_log.isInfoEnabled()) {
-							_log.info("Inactive User Digest has been built in " + stopWatch.getTime() + " ms.");
+						if (_log.isDebugEnabled()) {
+							_log.debug("Inactive User Digest has been built in " + stopWatch.getTime() + " ms.");
 						}
 					}
 				}
