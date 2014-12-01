@@ -298,6 +298,12 @@ public class UserDigestConfigurationLocalServiceUtil {
 		return getService().updateUserDigestConfiguration(id, userId, frequency);
 	}
 
+	public static void incrementNumberInactiveSent(long id)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		getService().incrementNumberInactiveSent(id);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}

@@ -47,6 +47,8 @@ public interface DigestConfiguration extends DigestConfigurationModel,
 	public java.util.Map<java.lang.String, com.liferay.portlet.digest.activity.DigestActivityType> getActivityTypesMap()
 		throws java.lang.Exception;
 
+	public int getFrequency();
+
 	public java.lang.String getFrequencyAsString() throws java.lang.Exception;
 
 	public java.util.Date getStartDate();

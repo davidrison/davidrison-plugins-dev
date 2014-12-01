@@ -111,7 +111,7 @@
 
 				<aui:fieldset column="true">
 					<c:if test="<%= category.equals(PortletCategoryKeys.PORTAL )%>">
-						<aui:select name="digestFrequency" label="digest-frequency">
+						<aui:select name="digestFrequency" label="digest-frequency-default">
 							<aui:option label="<%= DigestHelperUtil.getFrequencyAsString(DigestConstants.FREQUENCY_NONE) %>"
 										value="<%= DigestConstants.FREQUENCY_NONE %>"
 										selected="<%= digestFrequency == DigestConstants.FREQUENCY_NONE%>" />

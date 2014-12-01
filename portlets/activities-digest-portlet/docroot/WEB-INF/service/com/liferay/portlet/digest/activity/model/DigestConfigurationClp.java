@@ -450,13 +450,13 @@ public class DigestConfigurationClp extends BaseModelImpl<DigestConfiguration>
 		}
 	}
 
-	public void setStartDate(java.util.Date startDate) {
+	public void setEndDate(java.util.Date endDate) {
 		try {
-			String methodName = "setStartDate";
+			String methodName = "setEndDate";
 
 			Class<?>[] parameterTypes = new Class<?>[] { java.util.Date.class };
 
-			Object[] parameterValues = new Object[] { startDate };
+			Object[] parameterValues = new Object[] { endDate };
 
 			invokeOnRemoteModel(methodName, parameterTypes, parameterValues);
 		}
@@ -465,13 +465,13 @@ public class DigestConfigurationClp extends BaseModelImpl<DigestConfiguration>
 		}
 	}
 
-	public void setEndDate(java.util.Date endDate) {
+	public void setStartDate(java.util.Date startDate) {
 		try {
-			String methodName = "setEndDate";
+			String methodName = "setStartDate";
 
 			Class<?>[] parameterTypes = new Class<?>[] { java.util.Date.class };
 
-			Object[] parameterValues = new Object[] { endDate };
+			Object[] parameterValues = new Object[] { startDate };
 
 			invokeOnRemoteModel(methodName, parameterTypes, parameterValues);
 		}

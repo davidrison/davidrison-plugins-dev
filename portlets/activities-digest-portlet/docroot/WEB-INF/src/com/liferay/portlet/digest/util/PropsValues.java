@@ -39,6 +39,9 @@ public class PropsValues {
 	public static final int DIGEST_ACTIVITY_INACTIVE_USER_NUMBER_DAYS = GetterUtil.getInteger(
 			PropsUtil.get(PropsKeys.DIGEST_ACTIVITY_INACTIVE_USER_NUMBER_DAYS));
 
+	public static final int DIGEST_ACTIVITY_INACTIVE_USER_MAX_NUMBER_EMAILS = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.DIGEST_ACTIVITY_INACTIVE_USER_MAX_NUMBER_EMAILS), 3);
+
 	public static final boolean PERMISSIONS_VIEW_DYNAMIC_INHERITANCE = GetterUtil.getBoolean(
 			PropsUtil.get(
 					com.liferay.portal.kernel.util.PropsKeys.PERMISSIONS_VIEW_DYNAMIC_INHERITANCE));

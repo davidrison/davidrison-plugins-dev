@@ -17,9 +17,6 @@ package com.liferay.portlet.digest.activity.service.impl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.service.GroupLocalServiceUtil;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.digest.activity.model.UserDigestConfiguration;
 import com.liferay.portlet.digest.activity.service.base.UserDigestConfigurationLocalServiceBaseImpl;
 
@@ -83,6 +80,23 @@ public class UserDigestConfigurationLocalServiceImpl
 		}
 
 		return null;
+	}
+
+	public void incrementNumberInactiveSent(long id) throws PortalException, SystemException {
+		UserDigestConfiguration userDigestConfiguration = userDigestConfigurationPersistence.fetchByPrimaryKey(id);
+
+		if (Validator.isNotNull(userDigestConfiguration)) {
+			int numInactiveSent = userDigestConfiguration.getNumInactiveSent();
+
+			userDigestConfiguration.setNumInactiveSent(++numInactiveSent);
+
+			try {
+				userDigestConfiguration = userDigestConfigurationPersistence.update(userDigestConfiguration, false);
+			}
+			finally {
+				userDigestConfigurationPersistence.clearCache(userDigestConfiguration);
+			}
+		}
 	}
 
 	private static final int _MAX_USERS = 5000;

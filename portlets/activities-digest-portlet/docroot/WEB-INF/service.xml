@@ -89,6 +89,7 @@
 
 		<column name="userId" type="long" />
 		<column name="frequency" type="int" />
+		<column name="numInactiveSent" type="int" />
 
 		<!-- Finder methods -->
 

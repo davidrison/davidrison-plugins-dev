@@ -19,5 +19,6 @@ create table Digest_UserDigestConfiguration (
 	createDate DATE null,
 	modifiedDate DATE null,
 	userId LONG,
-	frequency INTEGER
+	frequency INTEGER,
+	numInactiveSent INTEGER
 );

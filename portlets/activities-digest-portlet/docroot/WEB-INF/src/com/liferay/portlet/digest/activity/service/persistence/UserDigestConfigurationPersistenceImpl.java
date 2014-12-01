@@ -438,6 +438,7 @@ public class UserDigestConfigurationPersistenceImpl extends BasePersistenceImpl<
 		userDigestConfigurationImpl.setModifiedDate(userDigestConfiguration.getModifiedDate());
 		userDigestConfigurationImpl.setUserId(userDigestConfiguration.getUserId());
 		userDigestConfigurationImpl.setFrequency(userDigestConfiguration.getFrequency());
+		userDigestConfigurationImpl.setNumInactiveSent(userDigestConfiguration.getNumInactiveSent());
 
 		return userDigestConfigurationImpl;
 	}

@@ -24,5 +24,6 @@
 		<field name="modifiedDate" type="Date" />
 		<field name="userId" type="long" />
 		<field name="frequency" type="int" />
+		<field name="numInactiveSent" type="int" />
 	</model>
 </model-hints>

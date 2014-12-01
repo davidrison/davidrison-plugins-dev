@@ -48,6 +48,7 @@
 			</basic>
 			<basic name="userId" />
 			<basic name="frequency" />
+			<basic name="numInactiveSent" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />

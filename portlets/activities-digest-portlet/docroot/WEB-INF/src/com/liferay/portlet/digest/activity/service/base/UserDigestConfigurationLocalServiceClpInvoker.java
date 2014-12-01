@@ -124,6 +124,10 @@ public class UserDigestConfigurationLocalServiceClpInvoker {
 		_methodName50 = "updateUserDigestConfiguration";
 
 		_methodParameterTypes50 = new String[] { "long", "long", "int" };
+
+		_methodName51 = "incrementNumberInactiveSent";
+
+		_methodParameterTypes51 = new String[] { "long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -246,6 +250,13 @@ public class UserDigestConfigurationLocalServiceClpInvoker {
 				((Integer)arguments[2]).intValue());
 		}
 
+		if (_methodName51.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes51, parameterTypes)) {
+			UserDigestConfigurationLocalServiceUtil.incrementNumberInactiveSent(((Long)arguments[0]).longValue());
+
+			return null;
+		}
+
 		throw new UnsupportedOperationException();
 	}
 
@@ -291,4 +302,6 @@ public class UserDigestConfigurationLocalServiceClpInvoker {
 	private String[] _methodParameterTypes49;
 	private String _methodName50;
 	private String[] _methodParameterTypes50;
+	private String _methodName51;
+	private String[] _methodParameterTypes51;
 }

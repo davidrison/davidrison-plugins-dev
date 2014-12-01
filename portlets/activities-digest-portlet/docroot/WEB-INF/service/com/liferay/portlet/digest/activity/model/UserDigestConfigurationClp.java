@@ -75,6 +75,7 @@ public class UserDigestConfigurationClp extends BaseModelImpl<UserDigestConfigur
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("userId", getUserId());
 		attributes.put("frequency", getFrequency());
+		attributes.put("numInactiveSent", getNumInactiveSent());
 
 		return attributes;
 	}
@@ -115,6 +116,12 @@ public class UserDigestConfigurationClp extends BaseModelImpl<UserDigestConfigur
 
 		if (frequency != null) {
 			setFrequency(frequency);
+		}
+
+		Integer numInactiveSent = (Integer)attributes.get("numInactiveSent");
+
+		if (numInactiveSent != null) {
+			setNumInactiveSent(numInactiveSent);
 		}
 	}
 
@@ -252,6 +259,28 @@ public class UserDigestConfigurationClp extends BaseModelImpl<UserDigestConfigur
 		}
 	}
 
+	public int getNumInactiveSent() {
+		return _numInactiveSent;
+	}
+
+	public void setNumInactiveSent(int numInactiveSent) {
+		_numInactiveSent = numInactiveSent;
+
+		if (_userDigestConfigurationRemoteModel != null) {
+			try {
+				Class<?> clazz = _userDigestConfigurationRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setNumInactiveSent", int.class);
+
+				method.invoke(_userDigestConfigurationRemoteModel,
+					numInactiveSent);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
 	public java.lang.String getFrequencyAsString() {
 		try {
 			String methodName = "getFrequencyAsString";
@@ -350,6 +379,7 @@ public class UserDigestConfigurationClp extends BaseModelImpl<UserDigestConfigur
 		clone.setModifiedDate(getModifiedDate());
 		clone.setUserId(getUserId());
 		clone.setFrequency(getFrequency());
+		clone.setNumInactiveSent(getNumInactiveSent());
 
 		return clone;
 	}
@@ -397,7 +427,7 @@ public class UserDigestConfigurationClp extends BaseModelImpl<UserDigestConfigur
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(13);
+		StringBundler sb = new StringBundler(15);
 
 		sb.append("{id=");
 		sb.append(getId());
@@ -411,13 +441,15 @@ public class UserDigestConfigurationClp extends BaseModelImpl<UserDigestConfigur
 		sb.append(getUserId());
 		sb.append(", frequency=");
 		sb.append(getFrequency());
+		sb.append(", numInactiveSent=");
+		sb.append(getNumInactiveSent());
 		sb.append("}");
 
 		return sb.toString();
 	}
 
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(22);
+		StringBundler sb = new StringBundler(25);
 
 		sb.append("<model><model-name>");
 		sb.append(
@@ -448,6 +480,10 @@ public class UserDigestConfigurationClp extends BaseModelImpl<UserDigestConfigur
 			"<column><column-name>frequency</column-name><column-value><![CDATA[");
 		sb.append(getFrequency());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>numInactiveSent</column-name><column-value><![CDATA[");
+		sb.append(getNumInactiveSent());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -461,5 +497,6 @@ public class UserDigestConfigurationClp extends BaseModelImpl<UserDigestConfigur
 	private long _userId;
 	private String _userUuid;
 	private int _frequency;
+	private int _numInactiveSent;
 	private BaseModel<?> _userDigestConfigurationRemoteModel;
 }

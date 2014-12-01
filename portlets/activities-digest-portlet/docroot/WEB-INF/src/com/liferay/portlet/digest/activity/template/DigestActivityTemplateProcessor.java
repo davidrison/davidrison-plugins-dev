@@ -19,6 +19,7 @@ import com.liferay.portlet.digest.activity.DigestActivity;
 import com.liferay.portlet.digest.activity.util.DigestActivityFactoryUtil;
 import com.liferay.portlet.digest.model.Digest;
 import com.liferay.portlet.digest.util.DigestConstants;
+import com.liferay.portlet.digest.util.DigestFrequencyThreadLocal;
 import com.liferay.portlet.digest.util.DigestHelperUtil;
 import com.liferay.portlet.journal.model.JournalTemplate;
 import com.liferay.portlet.journal.service.JournalTemplateLocalServiceUtil;
@@ -105,14 +106,16 @@ public class DigestActivityTemplateProcessor {
 
 			locale = user.getLocale();
 
+			int currentFrequency = DigestFrequencyThreadLocal.getDigestFrequency();
+
 			String digestFrequency = LanguageUtil.format(locale, "daily-snapshot", null);
 
-			if (digest.getConfiguration().getFrequency() == DigestConstants.FREQUENCY_WEEKLY) {
+			if (currentFrequency == DigestConstants.FREQUENCY_WEEKLY) {
 				digestFrequency = LanguageUtil.format(locale, "weekly-snapshot", null);
 			}
 
 			String digestTitleKey = "digest-title-daily";
-			if (digest.getConfiguration().getFrequency() == DigestConstants.FREQUENCY_DAILY) {
+			if (currentFrequency == DigestConstants.FREQUENCY_DAILY) {
 				digestTitleKey = "digest-title-daily";
 			}
 			else {
@@ -160,6 +163,9 @@ public class DigestActivityTemplateProcessor {
 		velocityContext.put("contacts", getContactActivityList(digests));
 
 		velocityContext.put("footerText", footerText);
+
+		velocityContext.put("startDate", startDate);
+		velocityContext.put("endDate", endDate);
 
 		return velocityContext;
 	}

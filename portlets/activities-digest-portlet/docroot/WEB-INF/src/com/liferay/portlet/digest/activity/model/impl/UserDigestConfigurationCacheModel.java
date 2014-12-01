@@ -34,7 +34,7 @@ public class UserDigestConfigurationCacheModel implements CacheModel<UserDigestC
 	Serializable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(13);
+		StringBundler sb = new StringBundler(15);
 
 		sb.append("{id=");
 		sb.append(id);
@@ -48,6 +48,8 @@ public class UserDigestConfigurationCacheModel implements CacheModel<UserDigestC
 		sb.append(userId);
 		sb.append(", frequency=");
 		sb.append(frequency);
+		sb.append(", numInactiveSent=");
+		sb.append(numInactiveSent);
 		sb.append("}");
 
 		return sb.toString();
@@ -75,6 +77,7 @@ public class UserDigestConfigurationCacheModel implements CacheModel<UserDigestC
 
 		userDigestConfigurationImpl.setUserId(userId);
 		userDigestConfigurationImpl.setFrequency(frequency);
+		userDigestConfigurationImpl.setNumInactiveSent(numInactiveSent);
 
 		userDigestConfigurationImpl.resetOriginalValues();
 
@@ -87,4 +90,5 @@ public class UserDigestConfigurationCacheModel implements CacheModel<UserDigestC
 	public long modifiedDate;
 	public long userId;
 	public int frequency;
+	public int numInactiveSent;
 }

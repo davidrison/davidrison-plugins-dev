@@ -25,6 +25,7 @@ import com.liferay.portlet.digest.activity.DigestActivityType;
 import com.liferay.portlet.digest.activity.impl.DigestActivityTypeImpl;
 import com.liferay.portlet.digest.activity.model.DigestConfiguration;
 import com.liferay.portlet.digest.util.DigestConstants;
+import com.liferay.portlet.digest.util.DigestFrequencyThreadLocal;
 import com.liferay.portlet.digest.util.DigestHelperUtil;
 
 import java.util.*;
@@ -166,7 +167,7 @@ public class DigestConfigurationImpl extends DigestConfigurationBaseImpl {
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(getEndDate());
 
-			int frequency = getFrequency();
+			int frequency = DigestFrequencyThreadLocal.getDigestFrequency();
 
 			if (frequency == DigestConstants.FREQUENCY_DAILY) {
 				cal.add(Calendar.HOUR_OF_DAY, -24);

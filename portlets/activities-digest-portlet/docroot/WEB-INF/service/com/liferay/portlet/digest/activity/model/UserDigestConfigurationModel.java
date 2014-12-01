@@ -158,6 +158,20 @@ public interface UserDigestConfigurationModel extends BaseModel<UserDigestConfig
 	 */
 	public void setFrequency(int frequency);
 
+	/**
+	 * Returns the num inactive sent of this user digest configuration.
+	 *
+	 * @return the num inactive sent of this user digest configuration
+	 */
+	public int getNumInactiveSent();
+
+	/**
+	 * Sets the num inactive sent of this user digest configuration.
+	 *
+	 * @param numInactiveSent the num inactive sent of this user digest configuration
+	 */
+	public void setNumInactiveSent(int numInactiveSent);
+
 	public boolean isNew();
 
 	public void setNew(boolean n);

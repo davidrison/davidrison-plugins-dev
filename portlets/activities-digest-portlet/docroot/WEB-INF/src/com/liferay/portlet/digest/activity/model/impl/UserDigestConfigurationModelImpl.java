@@ -64,9 +64,10 @@ public class UserDigestConfigurationModelImpl extends BaseModelImpl<UserDigestCo
 			{ "createDate", Types.TIMESTAMP },
 			{ "modifiedDate", Types.TIMESTAMP },
 			{ "userId", Types.BIGINT },
-			{ "frequency", Types.INTEGER }
+			{ "frequency", Types.INTEGER },
+			{ "numInactiveSent", Types.INTEGER }
 		};
-	public static final String TABLE_SQL_CREATE = "create table Digest_UserDigestConfiguration (id_ LONG not null primary key,companyId LONG,createDate DATE null,modifiedDate DATE null,userId LONG,frequency INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table Digest_UserDigestConfiguration (id_ LONG not null primary key,companyId LONG,createDate DATE null,modifiedDate DATE null,userId LONG,frequency INTEGER,numInactiveSent INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table Digest_UserDigestConfiguration";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
@@ -122,6 +123,7 @@ public class UserDigestConfigurationModelImpl extends BaseModelImpl<UserDigestCo
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("userId", getUserId());
 		attributes.put("frequency", getFrequency());
+		attributes.put("numInactiveSent", getNumInactiveSent());
 
 		return attributes;
 	}
@@ -162,6 +164,12 @@ public class UserDigestConfigurationModelImpl extends BaseModelImpl<UserDigestCo
 
 		if (frequency != null) {
 			setFrequency(frequency);
+		}
+
+		Integer numInactiveSent = (Integer)attributes.get("numInactiveSent");
+
+		if (numInactiveSent != null) {
+			setNumInactiveSent(numInactiveSent);
 		}
 	}
 
@@ -245,6 +253,14 @@ public class UserDigestConfigurationModelImpl extends BaseModelImpl<UserDigestCo
 		_frequency = frequency;
 	}
 
+	public int getNumInactiveSent() {
+		return _numInactiveSent;
+	}
+
+	public void setNumInactiveSent(int numInactiveSent) {
+		_numInactiveSent = numInactiveSent;
+	}
+
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -286,6 +302,7 @@ public class UserDigestConfigurationModelImpl extends BaseModelImpl<UserDigestCo
 		userDigestConfigurationImpl.setModifiedDate(getModifiedDate());
 		userDigestConfigurationImpl.setUserId(getUserId());
 		userDigestConfigurationImpl.setFrequency(getFrequency());
+		userDigestConfigurationImpl.setNumInactiveSent(getNumInactiveSent());
 
 		userDigestConfigurationImpl.resetOriginalValues();
 
@@ -378,12 +395,14 @@ public class UserDigestConfigurationModelImpl extends BaseModelImpl<UserDigestCo
 
 		userDigestConfigurationCacheModel.frequency = getFrequency();
 
+		userDigestConfigurationCacheModel.numInactiveSent = getNumInactiveSent();
+
 		return userDigestConfigurationCacheModel;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(13);
+		StringBundler sb = new StringBundler(15);
 
 		sb.append("{id=");
 		sb.append(getId());
@@ -397,13 +416,15 @@ public class UserDigestConfigurationModelImpl extends BaseModelImpl<UserDigestCo
 		sb.append(getUserId());
 		sb.append(", frequency=");
 		sb.append(getFrequency());
+		sb.append(", numInactiveSent=");
+		sb.append(getNumInactiveSent());
 		sb.append("}");
 
 		return sb.toString();
 	}
 
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(22);
+		StringBundler sb = new StringBundler(25);
 
 		sb.append("<model><model-name>");
 		sb.append(
@@ -434,6 +455,10 @@ public class UserDigestConfigurationModelImpl extends BaseModelImpl<UserDigestCo
 			"<column><column-name>frequency</column-name><column-value><![CDATA[");
 		sb.append(getFrequency());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>numInactiveSent</column-name><column-value><![CDATA[");
+		sb.append(getNumInactiveSent());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -455,6 +480,7 @@ public class UserDigestConfigurationModelImpl extends BaseModelImpl<UserDigestCo
 	private long _originalUserId;
 	private boolean _setOriginalUserId;
 	private int _frequency;
+	private int _numInactiveSent;
 	private long _columnBitmask;
 	private UserDigestConfiguration _escapedModel;
 }

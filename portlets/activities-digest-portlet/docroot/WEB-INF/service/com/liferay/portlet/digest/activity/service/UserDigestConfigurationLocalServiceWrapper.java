@@ -295,6 +295,12 @@ public class UserDigestConfigurationLocalServiceWrapper
 			userId, frequency);
 	}
 
+	public void incrementNumberInactiveSent(long id)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_userDigestConfigurationLocalService.incrementNumberInactiveSent(id);
+	}
+
 	/**
 	 * @deprecated Renamed to {@link #getWrappedService}
 	 */

@@ -37,6 +37,7 @@ public class UserDigestConfigurationSoap implements Serializable {
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setUserId(model.getUserId());
 		soapModel.setFrequency(model.getFrequency());
+		soapModel.setNumInactiveSent(model.getNumInactiveSent());
 
 		return soapModel;
 	}
@@ -140,10 +141,19 @@ public class UserDigestConfigurationSoap implements Serializable {
 		_frequency = frequency;
 	}
 
+	public int getNumInactiveSent() {
+		return _numInactiveSent;
+	}
+
+	public void setNumInactiveSent(int numInactiveSent) {
+		_numInactiveSent = numInactiveSent;
+	}
+
 	private long _id;
 	private long _companyId;
 	private Date _createDate;
 	private Date _modifiedDate;
 	private long _userId;
 	private int _frequency;
+	private int _numInactiveSent;
 }

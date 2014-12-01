@@ -1,5 +1,5 @@
 #set ($dateFormat = $dateFormatFactory.getSimpleDateFormat("MM/dd/yyyy"))
-#set ($whileYouWereAway = [$account.getName(), $dateFormat.format($digestConfiguration.getStartDate()), $dateFormat.format($digestConfiguration.getEndDate())])
+#set ($whileYouWereAway = [$account.getName(), $dateFormat.format($startDate), $dateFormat.format($endDate)])
 
 #set ($logoUrl = $digestHelperUtil.getLogoUrl($group.getGroupId()))
 

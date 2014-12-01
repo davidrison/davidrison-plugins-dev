@@ -54,6 +54,7 @@ public class UserDigestConfigurationWrapper implements UserDigestConfiguration,
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("userId", getUserId());
 		attributes.put("frequency", getFrequency());
+		attributes.put("numInactiveSent", getNumInactiveSent());
 
 		return attributes;
 	}
@@ -93,6 +94,12 @@ public class UserDigestConfigurationWrapper implements UserDigestConfiguration,
 
 		if (frequency != null) {
 			setFrequency(frequency);
+		}
+
+		Integer numInactiveSent = (Integer)attributes.get("numInactiveSent");
+
+		if (numInactiveSent != null) {
+			setNumInactiveSent(numInactiveSent);
 		}
 	}
 
@@ -240,6 +247,24 @@ public class UserDigestConfigurationWrapper implements UserDigestConfiguration,
 	*/
 	public void setFrequency(int frequency) {
 		_userDigestConfiguration.setFrequency(frequency);
+	}
+
+	/**
+	* Returns the num inactive sent of this user digest configuration.
+	*
+	* @return the num inactive sent of this user digest configuration
+	*/
+	public int getNumInactiveSent() {
+		return _userDigestConfiguration.getNumInactiveSent();
+	}
+
+	/**
+	* Sets the num inactive sent of this user digest configuration.
+	*
+	* @param numInactiveSent the num inactive sent of this user digest configuration
+	*/
+	public void setNumInactiveSent(int numInactiveSent) {
+		_userDigestConfiguration.setNumInactiveSent(numInactiveSent);
 	}
 
 	public boolean isNew() {
