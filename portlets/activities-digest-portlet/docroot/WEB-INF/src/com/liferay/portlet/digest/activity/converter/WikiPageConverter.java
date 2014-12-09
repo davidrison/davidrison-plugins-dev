@@ -63,9 +63,9 @@ public class WikiPageConverter extends BaseDigestActivityConverter {
 			case WikiActivityKeys.ADD_COMMENT:
 				return "add-comment";
 			case WikiActivityKeys.ADD_PAGE:
-				return "add-page";
+				return "add-pages";
 			case WikiActivityKeys.UPDATE_PAGE:
-				return "update-page";
+				return "update-pages";
 			default:
 				return null;
 		}
@@ -77,7 +77,7 @@ public class WikiPageConverter extends BaseDigestActivityConverter {
 
 		String link =
 				DigestHelperUtil.getPortalURL(page.getGroupId()) + DigestHelperUtil.getPathMain() +
-						"/wiki/find_page?pageResourcePrimKey=" + page.getPrimaryKey();
+						"/wiki/find_page?pageResourcePrimKey=" + page.getResourcePrimKey();
 
 		return link;
 	}

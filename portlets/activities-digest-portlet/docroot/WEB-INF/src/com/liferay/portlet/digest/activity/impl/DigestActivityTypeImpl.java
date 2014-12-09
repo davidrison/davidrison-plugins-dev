@@ -16,9 +16,10 @@ import java.util.Locale;
 
 public class DigestActivityTypeImpl implements DigestActivityType, Serializable {
 
-	public DigestActivityTypeImpl(int id, String name, int[] actions) {
+	public DigestActivityTypeImpl(int id, String name, int order, int[] actions) {
 		_id = id;
 		_name = name;
+		_order = order;
 		_actions = actions;
 	}
 
@@ -71,6 +72,16 @@ public class DigestActivityTypeImpl implements DigestActivityType, Serializable 
 	}
 
 	@Override
+	public void setOrder(int order) {
+		_order = order;
+	}
+
+	@Override
+	public int getOrder() {
+		return _order;
+	}
+
+	@Override
 	public void setId(int id) {
 		_id = id;
 	}
@@ -114,6 +125,7 @@ public class DigestActivityTypeImpl implements DigestActivityType, Serializable 
 
 		digestActivityType.put("id", getId());
 		digestActivityType.put("name", getName());
+		digestActivityType.put("order", getOrder());
 		digestActivityType.put("actions", digestActivityTypeActions);
 
 		return digestActivityType.toString();
@@ -123,6 +135,8 @@ public class DigestActivityTypeImpl implements DigestActivityType, Serializable 
 
 	private int[] _actions;
 	private String _name;
+	private int _order;
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
@@ -152,6 +166,7 @@ public class DigestActivityTypeImpl implements DigestActivityType, Serializable 
 				"_id=" + _id +
 				", _actions=" + Arrays.toString(_actions) +
 				", _name='" + _name + '\'' +
+				", _order='"+ _order + "\'"+
 				'}';
 	}
 

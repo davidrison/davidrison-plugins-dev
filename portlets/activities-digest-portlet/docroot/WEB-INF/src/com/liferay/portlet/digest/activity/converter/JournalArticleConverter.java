@@ -56,9 +56,9 @@ public class JournalArticleConverter extends BaseDigestActivityConverter {
 	public String getActionName(int action) throws Exception {
 		switch (action) {
 			case ADD_WEB_CONTENT:
-				return "add-web-content";
+				return "add-content";
 			case UPDATE_WEB_CONTENT:
-				return "update-web-content";
+				return "update-content";
 			default:
 				return null;
 		}

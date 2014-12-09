@@ -99,5 +99,20 @@ public class UserDigestConfigurationLocalServiceImpl
 		}
 	}
 
+	public void resetNumberInactiveSent(long userId) throws PortalException, SystemException {
+		UserDigestConfiguration userDigestConfiguration = userDigestConfigurationPersistence.fetchByUserId(userId);
+
+		if (Validator.isNotNull(userDigestConfiguration)) {
+			userDigestConfiguration.setNumInactiveSent(0);
+
+			try {
+				userDigestConfigurationPersistence.update(userDigestConfiguration, false);
+			}
+			finally {
+				userDigestConfigurationPersistence.clearCache(userDigestConfiguration);
+			}
+		}
+	}
+
 	private static final int _MAX_USERS = 5000;
 }

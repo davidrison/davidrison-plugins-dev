@@ -6,6 +6,7 @@ import com.liferay.portal.model.LayoutSet;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portlet.digest.InvalidDigestFrequencyException;
 import com.liferay.portlet.digest.activity.DigestActivityType;
 import com.liferay.portlet.digest.activity.model.DigestConfiguration;
 
@@ -18,12 +19,10 @@ import java.util.Map;
 public class DigestHelperUtil {
 
 	public static String formatDate(Date date) {
-
 		return getDigestHelper().formatDate(date);
 	}
 
 	public static String getActivityDigestHtml(String resourcesDir) throws Exception {
-
 		return getDigestHelper().getActivityDigestHtml(resourcesDir);
 	}
 
@@ -40,12 +39,10 @@ public class DigestHelperUtil {
 	}
 
 	public static List<DigestActivityType> getAvailableDigestActivityTypes() throws Exception {
-
 		return getDigestHelper().getAvailableDigestActivityTypes();
 	}
 
 	public static String getAvailableDigestActivityTypesAsJSON() throws Exception {
-
 		return getDigestHelper().getAvailableDigestActivityTypesAsJSON();
 	}
 
@@ -54,23 +51,18 @@ public class DigestHelperUtil {
 	}
 
 	public static  Role getDefaultAdminRole(long companyId) throws SystemException {
-
 		return getDigestHelper().getDefaultAdminRole(companyId);
 	}
 
 	public static  User getDefaultAdminUser(long companyId) throws SystemException {
-
 		return getDigestHelper().getDefaultAdminUser(companyId);
 	}
 
 	public static String getDefaultImagePath(long companyId) throws Exception {
-
-
 		return getDigestHelper().getDefaultImagePath(companyId);
 	}
 
 	public static  Group getDefaultGroup() throws Exception {
-
 		return getDigestHelper().getDefaultGroup();
 	}
 
@@ -79,42 +71,34 @@ public class DigestHelperUtil {
 	}
 
 	public static String getImagePath(long companyId, String className) throws Exception {
-
 		return getDigestHelper().getImagePath(companyId, className);
 	}
 
 	public static  long getDefaultLayoutSetId(long groupId) throws Exception {
-
 		return getDigestHelper().getDefaultLayoutSetId(groupId);
 	}
 
 	public static  DigestConfiguration getDefaultPortalDigestConfiguration(long companyId) throws Exception {
-
 		return getDigestHelper().getDefaultPortalDigestConfiguration(companyId);
 	}
 
 	public static  DigestConfiguration getDefaultSiteDigestConfiguration(long companyId, long groupId) throws Exception {
-
 		return getDigestHelper().getDefaultSiteDigestConfiguration(companyId, groupId);
 	}
 
 	public static  DigestConfiguration getDefaultUserDigestConfiguration(long companyId, long userId) throws Exception {
-
 		return getDigestHelper().getDefaultUserDigestConfiguration(companyId, userId);
 	}
 
 	public static  Group getGlobalGroup(long companyId) throws Exception {
-
 		return getDigestHelper().getGlobalGroup(companyId);
 	}
 
 	public static  int getDigestInactiveNumberDays(long companyId) throws Exception {
-
 		return getDigestHelper().getDigestInactiveNumberDays(companyId);
 	}
 
 	public static String getLayoutSetLogoUrl(LayoutSet layoutSet) throws Exception {
-
 		return getDigestHelper().getLayoutSetLogoUrl(layoutSet);
 	}
 
@@ -123,7 +107,6 @@ public class DigestHelperUtil {
 	}
 
 	public static  Map<Locale, String> getMap(Locale locale, String value) {
-
 		return getDigestHelper().getMap(locale, value);
 	}
 
@@ -160,28 +143,35 @@ public class DigestHelperUtil {
 	}
 
 	public static String getThemeImagesPath(long companyId) {
-
 		return getDigestHelper().getThemeImagesPath(companyId);
 	}
 
 	public static String getPortalURL(long groupId) throws Exception {
-
 		return getDigestHelper().getPortalURL(groupId);
 	}
 
 	public static ServiceContext getServiceContext(long companyId) throws SystemException {
-
 		return getDigestHelper().getServiceContext(companyId);
 	}
 
 	public static ServletContext getServletContext() throws Exception {
-
 		return getDigestHelper().getServletContext();
 	}
 
-	public static boolean isPluginPackageInstalled(String contextName) throws Exception {
+	public static boolean isUserActive(long userId) throws Exception {
+		return getDigestHelper().isUserActive(userId);
+	}
 
+	public static boolean isUserActive(User user) throws Exception {
+		return getDigestHelper().isUserActive(user);
+	}
+
+	public static boolean isPluginPackageInstalled(String contextName) throws Exception {
 		return getDigestHelper().isPluginPackageInstalled(contextName);
+	}
+
+	public static void validateFrequency(int frequency1, int frequency2) throws InvalidDigestFrequencyException {
+		getDigestHelper().validateFrequency(frequency1, frequency2);
 	}
 
 	public static DigestHelper getDigestHelper() {

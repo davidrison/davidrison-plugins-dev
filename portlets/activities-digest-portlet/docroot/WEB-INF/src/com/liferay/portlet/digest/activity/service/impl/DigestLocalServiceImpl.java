@@ -138,6 +138,12 @@ public class DigestLocalServiceImpl extends DigestLocalServiceBaseImpl {
 		dynamicQuery.add(
 			statusProperty.eq(WorkflowConstants.STATUS_APPROVED)
 		);
+
+		Property defaultUserProperty = PropertyFactoryUtil.forName("defaultUser");
+
+		dynamicQuery.add(
+			defaultUserProperty.eq(Boolean.FALSE)
+		);
 	}
 
 	private DynamicQuery _buildUserIdDynamicQuery(long companyId, boolean inactive) throws PortalException, SystemException {
@@ -220,7 +226,7 @@ public class DigestLocalServiceImpl extends DigestLocalServiceBaseImpl {
 			templateId = PropsValues.DIGEST_ACTIVITY_INACTIVE_USER_TEMPLATE_ID;
 		}
 
-		DigestBuilderUtil.processDigest(users, frequency, templateId);
+		DigestBuilderUtil.sendBuildDigest(users, frequency, templateId);
 	}
 
 	private void _doProcessUsers(long companyId, int frequency, boolean inactive, DynamicQuery dynamicQuery) throws PortalException, SystemException {

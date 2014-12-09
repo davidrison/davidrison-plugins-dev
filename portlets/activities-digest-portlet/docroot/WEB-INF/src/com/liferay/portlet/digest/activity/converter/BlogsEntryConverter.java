@@ -63,9 +63,9 @@ public class BlogsEntryConverter extends BaseDigestActivityConverter {
 			case BlogsActivityKeys.ADD_COMMENT:
 				return "add-comment";
 			case BlogsActivityKeys.ADD_ENTRY:
-				return "add-entry";
+				return "add-blogs";
 			case BlogsActivityKeys.UPDATE_ENTRY:
-				return "update-entry";
+				return "update-blogs";
 			default:
 				return null;
 		}

@@ -17,6 +17,6 @@ public class DigestActivityFactoryImpl implements DigestActivityFactory {
 	}
 
 	public DigestActivityType getDigestActivityType(String className) throws Exception {
-		return new DigestActivityTypeImpl(0, className, new int[0]);
+		return new DigestActivityTypeImpl(0, className, 0, new int[0]);
 	}
 }

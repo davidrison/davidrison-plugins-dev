@@ -6,6 +6,8 @@ import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.util.*;
 import com.liferay.portal.model.*;
@@ -16,6 +18,7 @@ import com.liferay.portal.webserver.WebServerServletTokenUtil;
 import com.liferay.portlet.blogs.model.BlogsEntry;
 import com.liferay.portlet.bookmarks.model.BookmarksEntry;
 import com.liferay.portlet.calendar.model.CalEvent;
+import com.liferay.portlet.digest.InvalidDigestFrequencyException;
 import com.liferay.portlet.digest.activity.DigestActivityType;
 import com.liferay.portlet.digest.activity.model.DigestConfiguration;
 import com.liferay.portlet.digest.activity.service.DigestConfigurationLocalServiceUtil;
@@ -421,6 +424,47 @@ public class DigestHelperImpl implements DigestHelper {
 	}
 
 	@Override
+	public boolean isUserActive(long userId) throws Exception {
+		User user = UserLocalServiceUtil.fetchUserById(userId);
+
+		if (Validator.isNotNull(user)) {
+			return isUserActive(user);
+		}
+
+		return false;
+	}
+
+	@Override
+	public boolean isUserActive(User user) throws Exception {
+
+		if (Validator.isNotNull(user)) {
+			if (Validator.isNotNull(user.getLastLoginDate())) {
+
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(new Date());
+
+				javax.portlet.PortletPreferences preferences = PrefsPropsUtil.getPreferences(
+						user.getCompanyId());
+
+				int inactiveUserDays = GetterUtil.getInteger(
+						preferences.getValue(
+								DigestConstants.PREFERENCE_DIGEST_INACTIVE_USER_NUMBER_DAYS,
+								"" + PropsValues.DIGEST_ACTIVITY_INACTIVE_USER_NUMBER_DAYS));
+
+				if (inactiveUserDays > DigestConstants.MAX_INACTIVE_NUMBER_DAYS) {
+					inactiveUserDays = DigestConstants.MAX_INACTIVE_NUMBER_DAYS;
+				}
+
+				cal.add(Calendar.DAY_OF_MONTH, -inactiveUserDays);
+
+				return (user.getLastLoginDate().getTime() > cal.getTime().getTime());
+			}
+		}
+
+		return false;
+	}
+
+	@Override
 	public boolean isPluginPackageInstalled(String contextName) throws Exception {
 		MethodKey methodKey =
 				new MethodKey(_PLUGINPACKAGEUTIL_CLASSNAME, _PLUGINPACKAGEUTIL_METHODNAME, String.class);
@@ -432,6 +476,34 @@ public class DigestHelperImpl implements DigestHelper {
 		}
 
 		return isInstalled;
+	}
+
+	@Override
+	public void validateFrequency(int frequency1, int frequency2) throws InvalidDigestFrequencyException {
+		try {
+			if (frequency1 != frequency2) {
+
+				if (_log.isInfoEnabled()) {
+					_log.info("DigestConfiguration frequency " + frequency1 +
+							" is not configured to run at the specified frequency " + DigestHelperUtil.getFrequencyAsString(frequency2) + ", skipping.");
+				}
+
+				throw new InvalidDigestFrequencyException();
+			}
+
+			if (frequency1 == DigestConstants.FREQUENCY_NONE) {
+				if (_log.isInfoEnabled()) {
+					_log.info("Digest Configuration has a frequency of NONE, skipping.");
+				}
+
+				throw new InvalidDigestFrequencyException();
+			}
+		}
+		catch (Throwable t) {
+			if (_log.isInfoEnabled()) {
+				_log.info("Unable to validate frequency when comparing frequencies " + frequency1 + " and " + frequency2);
+			}
+		}
 	}
 
 	private String _pathContext;
@@ -494,5 +566,7 @@ public class DigestHelperImpl implements DigestHelper {
 	private final String _PLUGINPACKAGEUTIL_CLASSNAME = "com.liferay.portal.plugin.PluginPackageUtil";
 
 	private final String _PLUGINPACKAGEUTIL_METHODNAME = "isInstalled";
+
+	private static final Log _log = LogFactoryUtil.getLog(DigestHelperImpl.class);
 
 }

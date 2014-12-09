@@ -98,6 +98,12 @@ public abstract class BaseDigestActivityProcessor implements DigestActivityProce
 			);
 		}
 
+		Property mirrorActivityIdProperty = PropertyFactoryUtil.forName("mirrorActivityId");
+
+		dynamicQuery.add(
+				mirrorActivityIdProperty.eq(0L)
+		);
+
 		// class name ids
 
 		List<Long> classNameIds =

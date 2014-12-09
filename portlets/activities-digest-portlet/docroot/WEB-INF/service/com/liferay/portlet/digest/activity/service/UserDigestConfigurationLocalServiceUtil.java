@@ -304,6 +304,12 @@ public class UserDigestConfigurationLocalServiceUtil {
 		getService().incrementNumberInactiveSent(id);
 	}
 
+	public static void resetNumberInactiveSent(long userId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		getService().resetNumberInactiveSent(userId);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}

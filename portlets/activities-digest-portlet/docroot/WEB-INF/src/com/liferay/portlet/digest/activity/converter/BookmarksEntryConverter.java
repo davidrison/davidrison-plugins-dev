@@ -61,9 +61,9 @@ public class BookmarksEntryConverter extends BaseDigestActivityConverter {
 	public String getActionName(int action) throws Exception {
 		switch (action) {
 			case BookmarksActivityKeys.ADD_EVENT:
-				return "add-event";
+				return "new-bookmark";
 			case BookmarksActivityKeys.UPDATE_EVENT:
-				return "update-event";
+				return "update-bookmark";
 			default:
 				return null;
 		}

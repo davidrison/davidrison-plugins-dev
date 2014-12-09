@@ -301,6 +301,12 @@ public class UserDigestConfigurationLocalServiceWrapper
 		_userDigestConfigurationLocalService.incrementNumberInactiveSent(id);
 	}
 
+	public void resetNumberInactiveSent(long userId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		_userDigestConfigurationLocalService.resetNumberInactiveSent(userId);
+	}
+
 	/**
 	 * @deprecated Renamed to {@link #getWrappedService}
 	 */

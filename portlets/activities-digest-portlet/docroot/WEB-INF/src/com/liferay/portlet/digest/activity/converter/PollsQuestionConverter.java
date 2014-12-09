@@ -52,7 +52,7 @@ public class PollsQuestionConverter extends BaseDigestActivityConverter {
 	public String getActionName(int action) throws Exception {
 		switch (action) {
 			case ADD_POLL:
-				return "add-poll";
+				return "new-poll";
 			case UPDATE_POLL:
 				return "update-poll";
 			default:

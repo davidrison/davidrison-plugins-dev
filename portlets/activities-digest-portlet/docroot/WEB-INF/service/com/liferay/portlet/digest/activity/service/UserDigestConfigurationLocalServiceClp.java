@@ -130,6 +130,10 @@ public class UserDigestConfigurationLocalServiceClp
 		_methodName22 = "incrementNumberInactiveSent";
 
 		_methodParameterTypes22 = new String[] { "long" };
+
+		_methodName23 = "resetNumberInactiveSent";
+
+		_methodParameterTypes23 = new String[] { "long" };
 	}
 
 	public com.liferay.portlet.digest.activity.model.UserDigestConfiguration addUserDigestConfiguration(
@@ -797,6 +801,34 @@ public class UserDigestConfigurationLocalServiceClp
 		}
 	}
 
+	public void resetNumberInactiveSent(long userId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		try {
+			_invokableLocalService.invokeMethod(_methodName23,
+				_methodParameterTypes23, new Object[] { userId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
 	private InvokableLocalService _invokableLocalService;
 	private String _methodName0;
 	private String[] _methodParameterTypes0;
@@ -842,4 +874,6 @@ public class UserDigestConfigurationLocalServiceClp
 	private String[] _methodParameterTypes21;
 	private String _methodName22;
 	private String[] _methodParameterTypes22;
+	private String _methodName23;
+	private String[] _methodParameterTypes23;
 }

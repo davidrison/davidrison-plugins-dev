@@ -266,4 +266,8 @@ public interface UserDigestConfigurationLocalService extends BaseLocalService,
 	public void incrementNumberInactiveSent(long id)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException;
+
+	public void resetNumberInactiveSent(long userId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
 }

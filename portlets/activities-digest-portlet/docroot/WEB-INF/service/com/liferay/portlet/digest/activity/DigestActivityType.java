@@ -29,5 +29,9 @@ public interface DigestActivityType {
 
 	public String getIconPath(long companyId) throws Exception;
 
+	public void setOrder(int order);
+
+	public int getOrder();
+
 	public String toJSONString() throws Exception;
 }

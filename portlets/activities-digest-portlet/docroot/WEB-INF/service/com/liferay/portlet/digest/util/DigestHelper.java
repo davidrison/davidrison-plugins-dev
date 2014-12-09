@@ -6,6 +6,7 @@ import com.liferay.portal.model.LayoutSet;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portlet.digest.InvalidDigestFrequencyException;
 import com.liferay.portlet.digest.activity.DigestActivityType;
 import com.liferay.portlet.digest.activity.model.DigestConfiguration;
 
@@ -16,6 +17,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public interface DigestHelper {
+
 	public String formatDate(Date date);
 
 	public String getActivityDigestHtml(String resourcesDir) throws Exception;
@@ -86,5 +88,12 @@ public interface DigestHelper {
 
 	public ServletContext getServletContext() throws Exception;
 
+	public boolean isUserActive(long userId) throws Exception;
+
+	public boolean isUserActive(User user) throws Exception;
+
 	public boolean isPluginPackageInstalled(String contextName) throws Exception;
+
+	public void validateFrequency(int frequency1, int frequency2) throws InvalidDigestFrequencyException;
+
 }

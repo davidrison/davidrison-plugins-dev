@@ -8,6 +8,8 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.mail.MailMessage;
+import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -15,6 +17,7 @@ import com.liferay.portal.model.Group;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portlet.digest.InvalidDigestFrequencyException;
 import com.liferay.portlet.digest.activity.DigestActivityType;
 import com.liferay.portlet.digest.activity.model.DigestConfiguration;
 import com.liferay.portlet.digest.activity.model.UserDigestConfiguration;
@@ -150,12 +153,21 @@ public class DigestBuilderImpl implements DigestBuilder {
 					continue;
 				}
 
+
 				// digest configuration
 
 				DigestConfiguration portalDigestConfiguration =
 						DigestHelperUtil.getActivePortalDigestConfiguration(user.getCompanyId());
 
-				DigestConfiguration digestConfiguration = null;
+				DigestConfiguration digestConfiguration = _copyDigestConfiguration(portalDigestConfiguration, user);;
+
+				if (isSkipUserDigestConfiguration(digestConfiguration, frequency, user.getUserId(), isInactiveDigest(templateId))) {
+					if (_log.isDebugEnabled()) {
+						_log.debug("User configuration is not valid, skipping.");
+					}
+
+					continue;
+				}
 
 				// site digest
 
@@ -178,17 +190,14 @@ public class DigestBuilderImpl implements DigestBuilder {
 
 					// site digest configuration overrides portal settings
 
-					digestConfiguration =
+					DigestConfiguration siteDigestConfiguration =
 							DigestHelperUtil.getActiveSiteDigestConfiguration(group.getGroupId());
 
-					if (Validator.isNull(digestConfiguration)) {
-						digestConfiguration = _copyDigestConfiguration(portalDigestConfiguration, user);
-					}
-					else {
-						digestConfiguration = _copyDigestConfiguration(digestConfiguration, user);
+					if (Validator.isNotNull(siteDigestConfiguration)) {
+						digestConfiguration = _copyDigestConfiguration(siteDigestConfiguration, user);
 					}
 
-					if (isSkipDigestConfiguration(digestConfiguration, frequency, user.getUserId(), group.getGroupId(), isInactiveDigest(templateId))) {
+					if (isSkipSiteDigestConfiguration(digestConfiguration, frequency, group.getGroupId(), isInactiveDigest(templateId))) {
 						continue;
 					}
 
@@ -222,7 +231,7 @@ public class DigestBuilderImpl implements DigestBuilder {
 
 						if (Validator.isNull(userDigestConfiguration)) {
 							userDigestConfiguration = UserDigestConfigurationLocalServiceUtil.addUserDigestConfiguration(
-									user.getCompanyId(), user.getUserId(), digestConfiguration.getFrequency());
+									user.getCompanyId(), user.getUserId(), portalDigestConfiguration.getFrequency());
 						}
 
 						int numInactiveSent = userDigestConfiguration.getNumInactiveSent();
@@ -392,14 +401,89 @@ public class DigestBuilderImpl implements DigestBuilder {
 		return (templateId.equals(PropsValues.DIGEST_ACTIVITY_INACTIVE_USER_TEMPLATE_ID));
 	}
 
-	protected boolean isSkipDigestConfiguration(
-			DigestConfiguration digestConfiguration, int frequency, long scopeUserId, long scopeGroupId, boolean inactive) throws Exception {
+	protected boolean isSkipUserDigestConfiguration(
+			DigestConfiguration digestConfiguration, int frequency, long scopeUserId, boolean inactive)
+		throws Exception {
 
 		User scopeUser = UserLocalServiceUtil.fetchUser(scopeUserId);
 
 		if (scopeUser.isDefaultUser()) {
 			return true;
 		}
+
+		if (!digestConfiguration.isEnabled()) {
+			if (_log.isInfoEnabled()) {
+				_log.info("Digest Configuration (" + digestConfiguration.getId() + ") is disabled, skipping..");
+			}
+
+			return true;
+		}
+
+		// portal digest configuration
+
+		DigestConfiguration portalDigestConfiguration =
+				DigestHelperUtil.getActivePortalDigestConfiguration(digestConfiguration.getCompanyId());
+
+		if (!inactive) {
+			// configuration frequency
+
+			int digestConfigurationFrequency;
+
+			// user digest configuration(frequency only)
+
+			UserDigestConfiguration userDigestConfiguration =
+					UserDigestConfigurationLocalServiceUtil.fetchUserDigestConfigurationByUserId(scopeUserId);
+
+			if (Validator.isNotNull(userDigestConfiguration)) {
+				digestConfigurationFrequency = userDigestConfiguration.getFrequency();
+			}
+			else {
+				// https://jira.netacad.net/jira/browse/NEX-8471
+				digestConfigurationFrequency = portalDigestConfiguration.getFrequency();
+			}
+
+			// validate frequency
+
+			try {
+				DigestHelperUtil.validateFrequency(digestConfigurationFrequency, frequency);
+			}
+			catch (InvalidDigestFrequencyException idfe) {
+				if (_log.isInfoEnabled()) {
+					_log.info("Digest Frequency "+digestConfigurationFrequency+" is not valid or does not match frequency "+frequency);
+				}
+
+				return true;
+			}
+
+			digestConfiguration.setFrequency(digestConfigurationFrequency);
+
+			// skip if user is in-active and currently processing active template
+
+			if (!DigestHelperUtil.isUserActive(scopeUserId)) {
+				if (_log.isInfoEnabled()) {
+					_log.info("User is not active and currently processing only active template, skipping.");
+				}
+
+				return true;
+			}
+		}
+		else {
+			// skip if user is active and currently processing inactive template
+
+			if (DigestHelperUtil.isUserActive(scopeUserId)) {
+				if (_log.isInfoEnabled()) {
+					_log.info("User is active and currently processing only in-active template, skipping.");
+				}
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	protected boolean isSkipSiteDigestConfiguration(
+			DigestConfiguration digestConfiguration, int frequency, long scopeGroupId, boolean inactive) throws Exception {
 
 		if (!digestConfiguration.isEnabled()) {
 			if (_log.isInfoEnabled()) {
@@ -432,40 +516,28 @@ public class DigestBuilderImpl implements DigestBuilder {
 		if (!inactive) {
 			// configuration frequency
 
-			int digestConfigurationFrequency = DigestConstants.FREQUENCY_NONE;
+			int digestConfigurationFrequency;
 
-			// user digest configuration(frequency only)
-
-			UserDigestConfiguration userDigestConfiguration =
-					UserDigestConfigurationLocalServiceUtil.fetchUserDigestConfigurationByUserId(scopeUserId);
-
-			if (Validator.isNotNull(userDigestConfiguration)) {
-				digestConfigurationFrequency = userDigestConfiguration.getFrequency();
+			if (Validator.isNotNull(siteDigestConfiguration)) {
+				digestConfigurationFrequency = siteDigestConfiguration.getFrequency();
 			}
 			else {
 				// https://jira.netacad.net/jira/browse/NEX-8471
 				digestConfigurationFrequency = portalDigestConfiguration.getFrequency();
 			}
 
+			try {
+				DigestHelperUtil.validateFrequency(digestConfigurationFrequency, frequency);
+			}
+			catch (InvalidDigestFrequencyException idfe) {
+				if (_log.isInfoEnabled()) {
+					_log.info("Digest Frequency "+digestConfigurationFrequency+" is not valid or does not match frequency "+frequency);
+				}
+
+				return true;
+			}
+
 			digestConfiguration.setFrequency(digestConfigurationFrequency);
-
-			if (digestConfigurationFrequency != frequency) {
-
-				if (_log.isInfoEnabled()) {
-					_log.info("DigestConfiguration frequency " + digestConfigurationFrequency +
-							" is not configured to run at the specified frequency " + DigestHelperUtil.getFrequencyAsString(frequency) + ", skipping.");
-				}
-
-				return true;
-			}
-
-			if (digestConfigurationFrequency == DigestConstants.FREQUENCY_NONE) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Digest Configuration (" + digestConfiguration.getId() + ") is set to NOT run, skipping.");
-				}
-
-				return true;
-			}
 		}
 
 		return false;
@@ -473,7 +545,6 @@ public class DigestBuilderImpl implements DigestBuilder {
 
 	@Override
 	public void sendBuildDigest(List<User> users, int frequency, String templateId) throws Exception {
-/* TODO REPLACE WITH CLUSTER EVENT NOTIFICATION
 		Message message = new Message();
 
 		message.put("frequency", frequency);
@@ -481,9 +552,7 @@ public class DigestBuilderImpl implements DigestBuilder {
 
 		message.setPayload(users);
 
-		MessageBusUtil.sendMessage("liferay/digest_activity_builder", message);*/
-
-		processDigest(users, frequency, templateId);
+		MessageBusUtil.sendMessage("liferay/digest_activity_builder", message);
 	}
 
 	protected void sendDigestEmail(long userId, DigestConfiguration digestConfiguration, String body) throws Exception {

@@ -63,9 +63,9 @@ public class MBMessageConverter extends BaseDigestActivityConverter  {
 	public String getActionName(int action) throws Exception {
 		switch (action) {
 			case MBActivityKeys.ADD_MESSAGE:
-				return "add-message";
+				return "new-posts";
 			case MBActivityKeys.REPLY_MESSAGE:
-				return "reply-message";
+				return "replies";
 			default:
 				return null;
 		}

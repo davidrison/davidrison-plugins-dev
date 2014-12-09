@@ -66,9 +66,9 @@ public class DLFileEntryConverter extends BaseDigestActivityConverter {
 	public String getActionName(int action) throws Exception {
 		switch (action) {
 			case DLActivityKeys.ADD_FILE_ENTRY:
-				return "add-file-entry";
+				return "add-documents";
 			case DLActivityKeys.UPDATE_FILE_ENTRY:
-				return "update-file-entry";
+				return "update-documents";
 			default:
 				return null;
 		}

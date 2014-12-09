@@ -86,6 +86,13 @@ public class DigestActivityTemplateProcessor {
 		if (Validator.isNotNull(digests) &&
 			digests.size() > 0) {
 
+
+			// sort
+			for (Digest digest : digests) {
+				Map<String, List<DigestActivity>> digestActivitiesMap =
+						digest.getActivities();
+
+			}
 			// digest
 
 			Digest digest = digests.get(0);
@@ -186,7 +193,15 @@ public class DigestActivityTemplateProcessor {
 
 					if (digestActivityTypeName.equals(SocialRelation.class.getName()) &&
 							!contactActivityList.contains(digestActivity)) {
-						contactActivityList.add(digestActivity);
+
+						if (digestActivity.getType() == 1) {
+							if (digestActivity.getExtraDataAsJSON().getString("userId1").equals(""+digest.getUserId())) {
+								contactActivityList.add(digestActivity);
+							}
+						}
+						else {
+							contactActivityList.add(digestActivity);
+						}
 					}
 				}
 			}
