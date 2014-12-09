@@ -36,6 +36,7 @@ public class BlogsEntryConverter extends BaseDigestActivityConverter {
 
 		switch (type) {
 			case BlogsActivityKeys.ADD_COMMENT:
+			case BlogsActivityKeys.ADD_COMMENT_BLOG:
 				return LanguageUtil.get(activity.getUser().getLocale(), "commented-on");
 			case BlogsActivityKeys.ADD_ENTRY:
 				return LanguageUtil.get(activity.getUser().getLocale(), "added-by");

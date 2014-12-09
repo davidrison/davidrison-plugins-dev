@@ -4,7 +4,6 @@
 <liferay-portlet-app>
 	<portlet>
 		<portlet-name>activities-digest</portlet-name>
-		<icon>/icon.png</icon>
 		<scheduler-entry>
 			<scheduler-event-listener-class>com.liferay.portlet.digest.activity.messaging.DigestActivityDailyListener</scheduler-event-listener-class>
 			<trigger>

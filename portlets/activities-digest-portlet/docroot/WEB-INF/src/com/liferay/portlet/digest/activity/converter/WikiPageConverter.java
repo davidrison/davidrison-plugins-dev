@@ -36,6 +36,7 @@ public class WikiPageConverter extends BaseDigestActivityConverter {
 
 		switch (type) {
 			case WikiActivityKeys.ADD_COMMENT:
+			case WikiActivityKeys.ADD_COMMENT_WIKI:
 				return LanguageUtil.get(activity.getUser().getLocale(), "commented-on");
 			case WikiActivityKeys.ADD_PAGE:
 				return LanguageUtil.get(activity.getUser().getLocale(), "added-by");

@@ -438,27 +438,25 @@ public class DigestHelperImpl implements DigestHelper {
 	public boolean isUserActive(User user) throws Exception {
 
 		if (Validator.isNotNull(user)) {
-			if (Validator.isNotNull(user.getLastLoginDate())) {
 
-				Calendar cal = Calendar.getInstance();
-				cal.setTime(new Date());
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(new Date());
 
-				javax.portlet.PortletPreferences preferences = PrefsPropsUtil.getPreferences(
-						user.getCompanyId());
+			javax.portlet.PortletPreferences preferences = PrefsPropsUtil.getPreferences(
+					user.getCompanyId());
 
-				int inactiveUserDays = GetterUtil.getInteger(
-						preferences.getValue(
-								DigestConstants.PREFERENCE_DIGEST_INACTIVE_USER_NUMBER_DAYS,
-								"" + PropsValues.DIGEST_ACTIVITY_INACTIVE_USER_NUMBER_DAYS));
+			int inactiveUserDays = GetterUtil.getInteger(
+					preferences.getValue(
+							DigestConstants.PREFERENCE_DIGEST_INACTIVE_USER_NUMBER_DAYS,
+							"" + PropsValues.DIGEST_ACTIVITY_INACTIVE_USER_NUMBER_DAYS));
 
-				if (inactiveUserDays > DigestConstants.MAX_INACTIVE_NUMBER_DAYS) {
-					inactiveUserDays = DigestConstants.MAX_INACTIVE_NUMBER_DAYS;
-				}
-
-				cal.add(Calendar.DAY_OF_MONTH, -inactiveUserDays);
-
-				return (user.getLastLoginDate().getTime() > cal.getTime().getTime());
+			if (inactiveUserDays > DigestConstants.MAX_INACTIVE_NUMBER_DAYS) {
+				inactiveUserDays = DigestConstants.MAX_INACTIVE_NUMBER_DAYS;
 			}
+
+			cal.add(Calendar.DAY_OF_MONTH, -inactiveUserDays);
+
+			return ( Validator.isNull(user.getLastLoginDate()) || (user.getLastLoginDate().getTime() > cal.getTime().getTime()) );
 		}
 
 		return false;

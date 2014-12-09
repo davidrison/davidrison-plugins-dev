@@ -34,7 +34,7 @@ public class DigestActivityBuilderListener extends BaseMessageListener {
 				stopWatch = new StopWatch();
 				stopWatch.start();
 
-				_log.debug("Processing " + users.size() + "users.");
+				_log.debug("Processing " + users.size() + " users.");
 			}
 
 			try {

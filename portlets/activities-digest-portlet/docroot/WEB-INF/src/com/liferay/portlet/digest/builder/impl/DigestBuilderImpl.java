@@ -518,13 +518,9 @@ public class DigestBuilderImpl implements DigestBuilder {
 
 			int digestConfigurationFrequency;
 
-			if (Validator.isNotNull(siteDigestConfiguration)) {
-				digestConfigurationFrequency = siteDigestConfiguration.getFrequency();
-			}
-			else {
-				// https://jira.netacad.net/jira/browse/NEX-8471
-				digestConfigurationFrequency = portalDigestConfiguration.getFrequency();
-			}
+			// a site admin does not have a frequency setting
+
+			digestConfigurationFrequency = portalDigestConfiguration.getFrequency();
 
 			try {
 				DigestHelperUtil.validateFrequency(digestConfigurationFrequency, frequency);

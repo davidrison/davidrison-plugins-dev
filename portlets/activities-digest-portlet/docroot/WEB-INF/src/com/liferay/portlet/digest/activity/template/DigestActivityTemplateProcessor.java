@@ -93,6 +93,7 @@ public class DigestActivityTemplateProcessor {
 						digest.getActivities();
 
 			}
+
 			// digest
 
 			Digest digest = digests.get(0);
