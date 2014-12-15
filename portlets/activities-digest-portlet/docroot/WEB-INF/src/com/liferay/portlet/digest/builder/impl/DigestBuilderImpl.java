@@ -159,7 +159,7 @@ public class DigestBuilderImpl implements DigestBuilder {
 				DigestConfiguration portalDigestConfiguration =
 						DigestHelperUtil.getActivePortalDigestConfiguration(user.getCompanyId());
 
-				DigestConfiguration digestConfiguration = _copyDigestConfiguration(portalDigestConfiguration, user);;
+				DigestConfiguration digestConfiguration = _copyDigestConfiguration(portalDigestConfiguration, user);
 
 				if (isSkipUserDigestConfiguration(digestConfiguration, frequency, user.getUserId(), isInactiveDigest(templateId))) {
 					if (_log.isDebugEnabled()) {
@@ -167,6 +167,30 @@ public class DigestBuilderImpl implements DigestBuilder {
 					}
 
 					continue;
+				}
+
+				// inactive user count
+
+				if (isInactiveDigest(templateId)) {
+					UserDigestConfiguration userDigestConfiguration =
+							UserDigestConfigurationLocalServiceUtil.fetchUserDigestConfigurationByUserId(user.getUserId());
+
+					if (Validator.isNull(userDigestConfiguration)) {
+						userDigestConfiguration = UserDigestConfigurationLocalServiceUtil.addUserDigestConfiguration(
+								user.getCompanyId(), user.getUserId(), portalDigestConfiguration.getFrequency());
+					}
+
+					int numInactiveSent = userDigestConfiguration.getNumInactiveSent();
+
+					if (numInactiveSent >= DigestHelperUtil.getDigestInactiveNumberEmails(user.getCompanyId())) {
+						if (_log.isInfoEnabled()) {
+							_log.info("User " + user.getFullName() + "(" + user.getUserId() + ") has been sent a digest due to inactivity that exceeds the maximum number of emails, skipping.");
+						}
+
+						continue;
+					}
+
+					updateInactiveUserCount(user, portalDigestConfiguration);
 				}
 
 				// site digest
@@ -225,26 +249,6 @@ public class DigestBuilderImpl implements DigestBuilder {
 
 						digestConfiguration.setStartDate(cal.getTime());
 						digestConfiguration.setEndDate(currentDate);
-
-						UserDigestConfiguration userDigestConfiguration =
-								UserDigestConfigurationLocalServiceUtil.fetchUserDigestConfigurationByUserId(user.getUserId());
-
-						if (Validator.isNull(userDigestConfiguration)) {
-							userDigestConfiguration = UserDigestConfigurationLocalServiceUtil.addUserDigestConfiguration(
-									user.getCompanyId(), user.getUserId(), portalDigestConfiguration.getFrequency());
-						}
-
-						int numInactiveSent = userDigestConfiguration.getNumInactiveSent();
-
-						if (numInactiveSent > PropsValues.DIGEST_ACTIVITY_INACTIVE_USER_MAX_NUMBER_EMAILS) {
-							if (_log.isInfoEnabled()) {
-								_log.info("User " + user.getFullName() + "("+user.getUserId()+") has been sent a digest due to inactivity that exceeds the maximum number of emails, skipping.");
-							}
-
-							continue;
-						}
-
-						updateInactiveUserCount(user, portalDigestConfiguration);
 					}
 
 					// filter actions
@@ -319,6 +323,11 @@ public class DigestBuilderImpl implements DigestBuilder {
 					if (_log.isWarnEnabled()) {
 						_log.warn("Digest Content not found for user " + user.getFullName());
 					}
+				}
+			}
+			catch (Throwable t) {
+				if (_log.isErrorEnabled()) {
+					_log.error("Unable to process digest for user("+user.getUserId()+") " + user.getFullName(), t);
 				}
 			}
 			finally {
@@ -448,10 +457,6 @@ public class DigestBuilderImpl implements DigestBuilder {
 				DigestHelperUtil.validateFrequency(digestConfigurationFrequency, frequency);
 			}
 			catch (InvalidDigestFrequencyException idfe) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Digest Frequency "+digestConfigurationFrequency+" is not valid or does not match frequency "+frequency);
-				}
-
 				return true;
 			}
 
@@ -526,10 +531,6 @@ public class DigestBuilderImpl implements DigestBuilder {
 				DigestHelperUtil.validateFrequency(digestConfigurationFrequency, frequency);
 			}
 			catch (InvalidDigestFrequencyException idfe) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Digest Frequency "+digestConfigurationFrequency+" is not valid or does not match frequency "+frequency);
-				}
-
 				return true;
 			}
 

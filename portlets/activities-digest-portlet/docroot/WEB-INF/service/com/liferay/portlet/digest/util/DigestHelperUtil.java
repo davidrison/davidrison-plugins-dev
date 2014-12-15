@@ -1,12 +1,12 @@
 package com.liferay.portlet.digest.util;
 
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.LayoutSet;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.portlet.digest.InvalidDigestFrequencyException;
 import com.liferay.portlet.digest.activity.DigestActivityType;
 import com.liferay.portlet.digest.activity.model.DigestConfiguration;
 
@@ -98,6 +98,10 @@ public class DigestHelperUtil {
 		return getDigestHelper().getDigestInactiveNumberDays(companyId);
 	}
 
+	public static  int getDigestInactiveNumberEmails(long companyId) throws Exception {
+		return getDigestHelper().getDigestInactiveNumberEmails(companyId);
+	}
+
 	public static String getLayoutSetLogoUrl(LayoutSet layoutSet) throws Exception {
 		return getDigestHelper().getLayoutSetLogoUrl(layoutSet);
 	}
@@ -170,7 +174,7 @@ public class DigestHelperUtil {
 		return getDigestHelper().isPluginPackageInstalled(contextName);
 	}
 
-	public static void validateFrequency(int frequency1, int frequency2) throws InvalidDigestFrequencyException {
+	public static void validateFrequency(int frequency1, int frequency2) throws PortalException {
 		getDigestHelper().validateFrequency(frequency1, frequency2);
 	}
 

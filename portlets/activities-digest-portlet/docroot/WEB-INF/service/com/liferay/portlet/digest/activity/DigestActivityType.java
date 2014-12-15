@@ -1,9 +1,5 @@
 package com.liferay.portlet.digest.activity;
 
-import com.liferay.portlet.asset.AssetRendererFactoryRegistryUtil;
-import com.liferay.portlet.asset.model.AssetRendererFactory;
-
-import javax.portlet.PortletRequest;
 import java.util.List;
 import java.util.Locale;
 

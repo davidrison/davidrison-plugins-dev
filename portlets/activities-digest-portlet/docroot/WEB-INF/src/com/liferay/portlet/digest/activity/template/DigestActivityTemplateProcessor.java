@@ -17,6 +17,7 @@ import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portlet.digest.activity.DigestActivity;
 import com.liferay.portlet.digest.activity.util.DigestActivityFactoryUtil;
+import com.liferay.portlet.digest.activity.util.comparator.DigestActivityTypeComparator;
 import com.liferay.portlet.digest.model.Digest;
 import com.liferay.portlet.digest.util.DigestConstants;
 import com.liferay.portlet.digest.util.DigestFrequencyThreadLocal;
@@ -86,14 +87,26 @@ public class DigestActivityTemplateProcessor {
 		if (Validator.isNotNull(digests) &&
 			digests.size() > 0) {
 
-
 			// sort
-			for (Digest digest : digests) {
+
+		/*	for (Digest digest : digests) {
 				Map<String, List<DigestActivity>> digestActivitiesMap =
 						digest.getActivities();
 
-			}
+				Map<String, List<DigestActivity>> treeMap = new TreeMap<String, List<DigestActivity>>(
+						new DigestActivityTypeComparator());
 
+//				treeMap.putAll(digestActivitiesMap);
+
+				for (String digestActivity : digestActivitiesMap.keySet()) {
+					List<DigestActivity> digestActivities = digestActivitiesMap.get(digestActivity);
+
+					treeMap.put(digestActivity, digestActivities);
+				}
+
+				digest.setActivities(treeMap);
+			}
+*/
 			// digest
 
 			Digest digest = digests.get(0);

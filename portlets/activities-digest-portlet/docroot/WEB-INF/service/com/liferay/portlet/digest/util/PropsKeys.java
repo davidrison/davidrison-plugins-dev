@@ -15,8 +15,6 @@ public class PropsKeys {
 
 	public static final String DIGEST_ACTIVITY_TEMPLATE_ID = "digest.activity.template.id";
 
-	public static final String DIGEST_ACTIVITY_USER_BLOCK_SIZE = "digest.activity.user.block.size";
-
 	public static final String DIGEST_DEVELOPER_MODE = "digest.developer.mode";
 
 	public static final String DIGEST_DATE_FORMAT = "digest.date.format.pattern";

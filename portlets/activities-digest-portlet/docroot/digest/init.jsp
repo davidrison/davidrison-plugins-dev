@@ -55,6 +55,7 @@
 			(portlet.getPortletId(), themeDisplay);
 
     int digestInactiveUserNumberDays = DigestHelperUtil.getDigestInactiveNumberDays(company.getCompanyId());
+	int digestInactiveUserNumberEmails = DigestHelperUtil.getDigestInactiveNumberEmails(company.getCompanyId());
 
 	PortletResponse portletResponse = (PortletResponse)request.getAttribute(JavaConstants.JAVAX_PORTLET_RESPONSE);
 

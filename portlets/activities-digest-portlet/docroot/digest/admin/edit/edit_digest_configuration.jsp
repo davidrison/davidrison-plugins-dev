@@ -132,6 +132,11 @@
 									  label="digest-inactive-user-number-days"
 									  type="text"
 									  value="<%= digestInactiveUserNumberDays %>" />
+
+						<aui:input	name="digestInactiveUserNumberEmails"
+									  label="digest-inactive-user-number-emails"
+									  type="text"
+									  value="<%= digestInactiveUserNumberEmails %>" />
 					</c:if>
 				</aui:fieldset>
 

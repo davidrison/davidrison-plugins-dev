@@ -272,12 +272,20 @@ public class ActivityDigestPortlet extends MVCPortlet {
 				actionRequest, "digestInactiveUserNumberDays",
 					PropsValues.DIGEST_ACTIVITY_INACTIVE_USER_NUMBER_DAYS);
 
+		int digestInactiveUserNumberEmails = ParamUtil.getInteger(
+				actionRequest, "digestInactiveUserNumberEmails",
+				PropsValues.DIGEST_ACTIVITY_INACTIVE_USER_MAX_NUMBER_EMAILS);
+
 		PortletPreferences portalPreferences = PrefsPropsUtil.getPreferences(
 				PortalUtil.getCompanyId(actionRequest));
 
 		portalPreferences.setValue(
 				DigestConstants.PREFERENCE_DIGEST_INACTIVE_USER_NUMBER_DAYS,
 				"" + digestInactiveUserNumberDays);
+
+		portalPreferences.setValue(
+				DigestConstants.PREFERENCE_DIGEST_INACTIVE_USER_MAX_NUMBER_EMAILS,
+				"" + digestInactiveUserNumberEmails);
 
 		portalPreferences.store();
 	}

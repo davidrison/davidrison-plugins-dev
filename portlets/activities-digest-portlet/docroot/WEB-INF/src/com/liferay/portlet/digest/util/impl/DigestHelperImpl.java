@@ -3,6 +3,7 @@ package com.liferay.portlet.digest.util.impl;
 import com.liferay.compat.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.NoSuchGroupException;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -301,6 +302,17 @@ public class DigestHelperImpl implements DigestHelper {
 	}
 
 	@Override
+	public int getDigestInactiveNumberEmails(long companyId) throws Exception {
+		javax.portlet.PortletPreferences portalPreferences = PrefsPropsUtil.getPreferences(companyId);
+
+		return GetterUtil.getInteger(
+				portalPreferences.getValue(
+						DigestConstants.PREFERENCE_DIGEST_INACTIVE_USER_MAX_NUMBER_EMAILS,
+						"" + PropsValues.DIGEST_ACTIVITY_INACTIVE_USER_MAX_NUMBER_EMAILS),
+				DigestConstants.MAX_INACTIVE_NUMBER_EMAILS);
+	}
+
+	@Override
 	public String getLayoutSetLogoUrl(LayoutSet layoutSet) throws Exception {
 		long logoId = 0;
 
@@ -477,30 +489,31 @@ public class DigestHelperImpl implements DigestHelper {
 	}
 
 	@Override
-	public void validateFrequency(int frequency1, int frequency2) throws InvalidDigestFrequencyException {
+	public void validateFrequency(int frequency1, int frequency2) throws PortalException {
+		String frequencyAsString = StringPool.BLANK;
+
 		try {
-			if (frequency1 != frequency2) {
-
-				if (_log.isInfoEnabled()) {
-					_log.info("DigestConfiguration frequency " + frequency1 +
-							" is not configured to run at the specified frequency " + DigestHelperUtil.getFrequencyAsString(frequency2) + ", skipping.");
-				}
-
-				throw new InvalidDigestFrequencyException();
-			}
-
-			if (frequency1 == DigestConstants.FREQUENCY_NONE) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Digest Configuration has a frequency of NONE, skipping.");
-				}
-
-				throw new InvalidDigestFrequencyException();
-			}
+			frequencyAsString = DigestHelperUtil.getFrequencyAsString(frequency2);
 		}
 		catch (Throwable t) {
+		}
+
+		if (frequency1 != frequency2) {
+
 			if (_log.isInfoEnabled()) {
-				_log.info("Unable to validate frequency when comparing frequencies " + frequency1 + " and " + frequency2);
+				_log.info("DigestConfiguration frequency " + frequency1 +
+						" is not configured to run at the specified frequency " + frequencyAsString + ", skipping.");
 			}
+
+			throw new InvalidDigestFrequencyException();
+		}
+
+		if (frequency1 == DigestConstants.FREQUENCY_NONE) {
+			if (_log.isInfoEnabled()) {
+				_log.info("Digest Configuration has a frequency of NONE, skipping.");
+			}
+
+			throw new InvalidDigestFrequencyException();
 		}
 	}
 

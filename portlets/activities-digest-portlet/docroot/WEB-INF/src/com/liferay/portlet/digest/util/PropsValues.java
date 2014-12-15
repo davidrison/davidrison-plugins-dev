@@ -16,13 +16,9 @@ public class PropsValues {
 					PropsUtil.get(PropsKeys.DIGEST_ACTIVITY_SUMMARY_LENGTH),
 						DigestConstants.DIGEST_ACTIVITY_DEFAULT_SUMMARY_LENGTH);
 
-	public static final int DIGEST_ACTIVITY_USER_BLOCK_SIZE =
-			GetterUtil.getInteger(
-					PropsUtil.get(PropsKeys.DIGEST_ACTIVITY_USER_BLOCK_SIZE), DigestConstants.DIGEST_ACTIVITY_DEFAULT_USER_BLOCK_SIZE);
-
 	public static final int DIGEST_ACTIVITY_MAX_CONCURRENT_USER_PROCESS =
 			GetterUtil.getInteger(
-					PropsUtil.get(PropsKeys.DIGEST_ACTIVITY_MAX_CONCURRENT_USER_PROCESS), 3);
+					PropsUtil.get(PropsKeys.DIGEST_ACTIVITY_MAX_CONCURRENT_USER_PROCESS), DigestConstants.MAX_CONCURRENT_USER_PROCESS);
 
 	public static final String DIGEST_DATE_FORMAT =
 			GetterUtil.getString(
@@ -37,10 +33,10 @@ public class PropsValues {
 	public static final String DIGEST_ACTIVITY_INACTIVE_USER_TEMPLATE_ID = PropsUtil.get(PropsKeys.DIGEST_ACTIVITY_INACTIVE_USER_TEMPLATE_ID);
 
 	public static final int DIGEST_ACTIVITY_INACTIVE_USER_NUMBER_DAYS = GetterUtil.getInteger(
-			PropsUtil.get(PropsKeys.DIGEST_ACTIVITY_INACTIVE_USER_NUMBER_DAYS));
+			PropsUtil.get(PropsKeys.DIGEST_ACTIVITY_INACTIVE_USER_NUMBER_DAYS), DigestConstants.MAX_INACTIVE_NUMBER_DAYS);
 
 	public static final int DIGEST_ACTIVITY_INACTIVE_USER_MAX_NUMBER_EMAILS = GetterUtil.getInteger(
-			PropsUtil.get(PropsKeys.DIGEST_ACTIVITY_INACTIVE_USER_MAX_NUMBER_EMAILS), 3);
+			PropsUtil.get(PropsKeys.DIGEST_ACTIVITY_INACTIVE_USER_MAX_NUMBER_EMAILS), DigestConstants.MAX_INACTIVE_NUMBER_EMAILS);
 
 	public static final boolean PERMISSIONS_VIEW_DYNAMIC_INHERITANCE = GetterUtil.getBoolean(
 			PropsUtil.get(

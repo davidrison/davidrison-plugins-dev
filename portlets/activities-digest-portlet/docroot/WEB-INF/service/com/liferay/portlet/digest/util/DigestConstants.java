@@ -26,7 +26,13 @@ public class DigestConstants {
 
 	public static final int MAX_INACTIVE_NUMBER_DAYS = 10;
 
+	public static final int MAX_INACTIVE_NUMBER_EMAILS = 3;
+
+	public static final int MAX_CONCURRENT_USER_PROCESS = 3;
+
 	public static final String PREFERENCE_DIGEST_INACTIVE_USER_NUMBER_DAYS = "digest-inactive-user-number-days";
+
+	public static final String PREFERENCE_DIGEST_INACTIVE_USER_MAX_NUMBER_EMAILS = "digest-inactive-user-max-number-emails";
 
 	public static final int WEEK_IN_DAYS = 7;
 
