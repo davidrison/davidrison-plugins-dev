@@ -144,13 +144,25 @@ public class ActivityDigestPortlet extends MVCPortlet {
 					}
 				}
 
+				DigestConfiguration portalDigestConfiguration =
+						DigestHelperUtil.getActivePortalDigestConfiguration(themeDisplay.getCompanyId());
+
+				if (digestConfigurationType == DigestConstants.DIGEST_CONFIGURATION_SITE) {
+					// settings come from portal configuration
+
+					frequency = portalDigestConfiguration.getFrequency();
+					summaryLength = portalDigestConfiguration.getSummaryLength();
+				}
+
 				DigestConfigurationLocalServiceUtil.updateDigestConfiguration(
 						digestConfiguration.getId(), digestConfiguration.getUserId(),
 						digestConfiguration.getGroupId(), digestConfiguration.getCompanyId(), digestEnabled,
 						frequency, digestConfiguration.getScopeGroupId(), digestConfiguration.getScopeUserId(),
 						summaryLength, activityTypes.toString());
 
-				updatePreferences(actionRequest, actionResponse);
+				if (digestConfigurationType == DigestConstants.DIGEST_CONFIGURATION_PORTAL) {
+					updatePreferences(actionRequest, actionResponse);
+				}
 			}
 		}
 		catch (Exception e) {

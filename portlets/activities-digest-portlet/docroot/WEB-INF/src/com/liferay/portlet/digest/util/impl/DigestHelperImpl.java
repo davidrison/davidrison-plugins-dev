@@ -490,19 +490,11 @@ public class DigestHelperImpl implements DigestHelper {
 
 	@Override
 	public void validateFrequency(int frequency1, int frequency2) throws PortalException {
-		String frequencyAsString = StringPool.BLANK;
-
-		try {
-			frequencyAsString = DigestHelperUtil.getFrequencyAsString(frequency2);
-		}
-		catch (Throwable t) {
-		}
-
 		if (frequency1 != frequency2) {
 
 			if (_log.isInfoEnabled()) {
 				_log.info("DigestConfiguration frequency " + frequency1 +
-						" is not configured to run at the specified frequency " + frequencyAsString + ", skipping.");
+						" is not configured to run at the specified frequency " + frequency2 + ", skipping.");
 			}
 
 			throw new InvalidDigestFrequencyException();
