@@ -8,6 +8,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portlet.digest.activity.DigestActivity;
+import com.liferay.portlet.digest.activity.DigestActivityType;
 import com.liferay.portlet.digest.activity.model.DigestConfiguration;
 import com.liferay.portlet.digest.model.Digest;
 
@@ -63,6 +64,11 @@ public class DigestImpl implements Digest, Serializable {
 	@Override
 	public DigestConfiguration getConfiguration() {
 		return _digestConfiguration;
+	}
+
+	@Override
+	public List<DigestActivityType> getActivityTypes() throws Exception {
+		return _digestConfiguration.getActivityTypesList();
 	}
 
 	@Override

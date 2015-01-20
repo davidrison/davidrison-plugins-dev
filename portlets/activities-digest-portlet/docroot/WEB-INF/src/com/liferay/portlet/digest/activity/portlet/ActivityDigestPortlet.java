@@ -227,6 +227,7 @@ public class ActivityDigestPortlet extends MVCPortlet {
 	}
 
 	protected JSONArray getActivityTypes(ActionRequest actionRequest) throws Exception {
+		// TODO Add Order
 		List<DigestActivityType> digestActivityTypeList =
 				DigestHelperUtil.getAvailableDigestActivityTypes();
 
@@ -248,6 +249,11 @@ public class ActivityDigestPortlet extends MVCPortlet {
 
 			digestActivityType.setActions(
 					ArrayUtil.toArray(newActions.toArray(new Integer[0])));
+
+			int order = ParamUtil.getInteger(
+					actionRequest, digestActivityType.getName() + "_ORDER_", 0);
+
+			digestActivityType.setOrder(order);
 		}
 
 		JSONArray availableDigestActivityTypesJSONArray =

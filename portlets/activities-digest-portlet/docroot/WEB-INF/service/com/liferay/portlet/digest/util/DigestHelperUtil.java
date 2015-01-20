@@ -50,6 +50,10 @@ public class DigestHelperUtil {
 		return getDigestHelper().getAvailableDigestActivityTypeActions(activityTypeName);
 	}
 
+	public static int getConfiguredFrequency(DigestConfiguration digestConfiguration, User user) throws Exception {
+		return getDigestHelper().getConfiguredFrequency(digestConfiguration, user);
+	}
+
 	public static  Role getDefaultAdminRole(long companyId) throws SystemException {
 		return getDigestHelper().getDefaultAdminRole(companyId);
 	}

@@ -34,6 +34,8 @@ public interface DigestHelper {
 
 	public List<Integer> getAvailableDigestActivityTypeActions(String activityTypeName) throws Exception;
 
+	public int getConfiguredFrequency(DigestConfiguration digestConfiguration, User user) throws Exception;
+
 	public Role getDefaultAdminRole(long companyId) throws SystemException;
 
 	public User getDefaultAdminUser(long companyId) throws SystemException;

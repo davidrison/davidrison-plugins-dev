@@ -21,6 +21,7 @@
 					#foreach($digest in $digests)
 						#set ($digestConfiguration = $digest.getConfiguration())
 						#set ($activitiesList = $digest.getActivities())
+						#set ($activityTypesList = $digestConfiguration.getActivityTypesList())
 						#set ($group = $digest.getGroup())
 
 						<div class="topic-wrapper" style="margin-bottom: 20px;padding-left: 125px;">
@@ -29,15 +30,12 @@
 								<span class="title-text" style="display: block;font-size: 1.5em;padding: 0.5em 0;">$group.getDescriptiveName($locale)</span>
 							</div>
 							<div class="topic-details">
-								#foreach($activityKey in $activitiesList.keySet())
-									#set ($activityList = $activitiesList.get($activityKey))
-									#set ($activityType = $digestActivityFactory.getDigestActivityType($activityKey))
+								#foreach($activityType in $activityTypesList)
+									#set ($activityList = $activitiesList.get($activityType.getName()))
 									#set ($activityTypeName = $activityType.getLocalizedName($locale))
 
-									#set ($digestConfigurationActivityType = $digestConfiguration.getActivityTypesMap().get($activityKey))
-
-									#if ($digestConfigurationActivityType.isEnabled())
-										#if($activityKey != 'com.liferay.portlet.social.model.SocialRelation')
+									#if ($activityType.isEnabled())
+										#if($activityType.getName() != 'com.liferay.portlet.social.model.SocialRelation')
 											<div class="details-area" style="margin-bottom: 10px; padding: 5px 0;">
 												<div class="details-title" style="font-weight: bolder;padding: 5px 0;">
 													<img class="topic-icon square-image" src="$activityType.getIconPath($company.getCompanyId())" alt="" style="height: 2.5em;width: 2.5em;position: absolute;left: -40px;top: 0.4em;">

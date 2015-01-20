@@ -33,6 +33,7 @@ public class DigestActivityTypeImpl implements DigestActivityType, Serializable 
 
 			setId(digestActivityTypeObject.getInt("id"));
 			setName(digestActivityTypeObject.getString("name"));
+			setOrder(digestActivityTypeObject.getInt("order"));
 
 			List<Integer> actions = new ArrayList<Integer>();
 

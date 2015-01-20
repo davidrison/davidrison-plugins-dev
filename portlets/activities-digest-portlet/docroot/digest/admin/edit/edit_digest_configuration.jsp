@@ -142,17 +142,18 @@
 
 				<c:if test="<%= !category.equals(PortletCategoryKeys.MY) %>">
 					<%
-						List<DigestActivityType> availableDigestActivityTypes =
-								DigestHelperUtil.getAvailableDigestActivityTypes();
-
 						List<DigestActivityType> digestActivityTypes =
 								digestConfiguration.getActivityTypesList();
 
-						for (DigestActivityType digestActivityType : availableDigestActivityTypes) {
-							List<Integer> actionsList = digestActivityType.getActionsAsList();
+						for (DigestActivityType digestActivityType : digestActivityTypes) {
+							List<Integer> actionsList =
+									DigestHelperUtil.getAvailableDigestActivityTypeActions(
+											digestActivityType.getName());
 
 							Map<String, DigestActivityType> portalActivityTypesMap =
 									portalDigestConfiguration.getActivityTypesMap();
+
+							int displayOrder = digestActivityType.getOrder();
 
 							if (category.equals(PortletCategoryKeys.CONTENT)) {
 								// if action is disabled in portal, disable in site ui
@@ -163,66 +164,94 @@
 								if (portalDigestActivityType.getActionsAsList().isEmpty()) {
 									continue;
 								}
+
+								displayOrder = portalDigestActivityType.getOrder();
 							}
 
 					%>
+					<aui:field-wrapper
+							label="<%= digestActivityType.getLocalizedName(themeDisplay.getLocale()) %>"
+							name="<%= digestActivityType.getName() %>"
+							inlineField="false"
+							inlineLabel="false">
+						<%
+							if (category.equals(PortletCategoryKeys.PORTAL)) {
+								%>
+								<aui:select label="display-weight" name="<%= digestActivityType.getName() + \"_ORDER_\" %>" multiple="false" useNamespace="true">
+									<%
+
+										for (int i = 0 ; i < digestActivityTypes.size(); i++) {
+									%>
+									<aui:option value="<%= (i+1) %>" selected="<%= digestActivityType.getOrder() == (i+1) %>" label="<%= (i+1) %>"/>
+									<%
+										}
+									%>
+								</aui:select>
+								<%
+							}
+							else {
+								%>
+								<aui:input name="<%= digestActivityType.getName() + \"_ORDER_\" %>"
+										   type="hidden"
+										   value="<%= displayOrder %>"/>
+								<%
+							}
+						%>
 						<aui:field-wrapper
-								label="<%= digestActivityType.getLocalizedName(themeDisplay.getLocale()) %>"
-								name="<%= digestActivityType.getName() %>"
+								label="activities"
+								name="activities"
 								inlineField="false"
 								inlineLabel="false">
-							<%
-								for (Integer action : actionsList) {
-									boolean checked = false;
-									boolean disabled = false;
+						<%
+							for (Integer action : actionsList) {
+								boolean checked = false;
+								boolean disabled = false;
 
-									if (category.equals(PortletCategoryKeys.CONTENT)) {
-										// if action is disabled in portal, disable in site ui
+								if (category.equals(PortletCategoryKeys.CONTENT)) {
+									// if action is disabled in portal, disable in site ui
 
-										DigestActivityType portalDigestActivityType =
-												portalActivityTypesMap.get(digestActivityType.getName());
+									DigestActivityType portalDigestActivityType =
+											portalActivityTypesMap.get(digestActivityType.getName());
 
-										if (!portalDigestActivityType.getActionsAsList().contains(action)) {
-											disabled = true;
-											checked = false;
-											continue;
-										}
+									if (!portalDigestActivityType.getActionsAsList().contains(action)) {
+										disabled = true;
+										checked = false;
+										continue;
 									}
-
-									String activityTypeActionKey = digestActivityType.getName() + "_ACTION_" + action;
-
-									Map<String, DigestActivityType> digestActivityTypeMap =
-											digestConfiguration.getActivityTypesMap();
-
-									DigestActivityType activeDigestActivityType =
-											digestActivityTypeMap.get(digestActivityType.getName());
-
-									if (Validator.isNotNull(activeDigestActivityType)) {
-										List<Integer> activeActions =
-												activeDigestActivityType.getActionsAsList();
-										for (Integer activeAction : activeActions) {
-											if (activeAction.intValue() == action.intValue()) {
-												checked = true;
-											}
-										}
-									}
-							%>
-
-							<aui:input	name="<%= activityTypeActionKey %>"
-										  type="checkbox"
-										  label="<%= DigestActivityFactoryUtil.getDigestActivityConverter(digestActivityType.getName()).getActionName(action) %>"
-										  checked="<%= checked %>"
-										  disabled="<%= disabled %>"/>
-
-
-							<%
-
 								}
-							%>
+
+								String activityTypeActionKey = digestActivityType.getName() + "_ACTION_" + action;
+
+								Map<String, DigestActivityType> digestActivityTypeMap =
+										digestConfiguration.getActivityTypesMap();
+
+								DigestActivityType activeDigestActivityType =
+										digestActivityTypeMap.get(digestActivityType.getName());
+
+								if (Validator.isNotNull(activeDigestActivityType)) {
+									List<Integer> activeActions =
+											activeDigestActivityType.getActionsAsList();
+									for (Integer activeAction : activeActions) {
+										if (activeAction.intValue() == action.intValue()) {
+											checked = true;
+										}
+									}
+								}
+						%>
+
+						<aui:input name="<%= activityTypeActionKey %>"
+								   type="checkbox"
+								   label="<%= DigestActivityFactoryUtil.getDigestActivityConverter(digestActivityType.getName()).getActionName(action) %>"
+								   checked="<%= checked %>"
+								   disabled="<%= disabled %>"/>
+						<%
+
+							}
+						%>
 						</aui:field-wrapper>
+					</aui:field-wrapper>
 					<%
 						}
-
 					%>
 				</c:if>
 
@@ -235,3 +264,29 @@
 	</c:otherwise>
 </c:choose>
 
+
+<aui:script>
+	AUI().use(
+	'aui-nested-list',
+	function(A) {
+	var placeholder = A.Node.create('<li class="placeholder"></li>');
+
+	new A.NestedList(
+	{
+	dropCondition: function(event) {
+	updateAssetOrder();
+
+	return true;
+	},
+	dropOn: 'activityTypesList',
+	nodes: '#activityTypesList li',
+	placeholder: placeholder
+	}
+	);
+	}
+	);
+
+	function updateAssetOrder() {
+	alert("Update Asset Order");
+	}
+</aui:script>

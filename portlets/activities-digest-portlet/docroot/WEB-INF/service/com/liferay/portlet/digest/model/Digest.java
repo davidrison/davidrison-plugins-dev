@@ -3,6 +3,7 @@ package com.liferay.portlet.digest.model;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.User;
 import com.liferay.portlet.digest.activity.DigestActivity;
+import com.liferay.portlet.digest.activity.DigestActivityType;
 import com.liferay.portlet.digest.activity.model.DigestConfiguration;
 
 import java.util.List;
@@ -12,6 +13,8 @@ public interface Digest {
 	public long getGroupId();
 
 	public DigestConfiguration getConfiguration();
+
+	public List<DigestActivityType> getActivityTypes() throws Exception;
 
 	public Map<String, List<DigestActivity>> getActivities();
 

@@ -8,6 +8,10 @@ public class DigestConstants {
 
 	public static final int DIGEST_ACTIVITY_DEFAULT_USER_BLOCK_SIZE = 100;
 
+	public static final String DIGEST_ACTIVITY_DEFAULT_TEMPLATE_ID = "ACTIVITYDIGEST";
+
+	public static final String DIGEST_ACTIVITY_DEFAULT_INACTIVE_USER_TEMPLATE_ID = "INACTIVEUSERACTIVITYDIGEST";
+
 	public static final String DIGEST_SERVLET_CONTEXT = "activities-digest-portlet";
 
 	public static final int DIGEST_CONFIGURATION_USER = 1001;

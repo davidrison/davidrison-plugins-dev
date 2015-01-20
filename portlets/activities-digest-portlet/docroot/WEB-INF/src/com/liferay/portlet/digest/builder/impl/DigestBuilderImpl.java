@@ -221,7 +221,7 @@ public class DigestBuilderImpl implements DigestBuilder {
 						digestConfiguration = _copyDigestConfiguration(siteDigestConfiguration, user);
 					}
 
-					if (isSkipSiteDigestConfiguration(digestConfiguration, frequency, group.getGroupId(), isInactiveDigest(templateId))) {
+					if (isSkipSiteDigestConfiguration(digestConfiguration, frequency, user.getUserId(), group.getGroupId(), isInactiveDigest(templateId))) {
 						continue;
 					}
 
@@ -414,11 +414,6 @@ public class DigestBuilderImpl implements DigestBuilder {
 			DigestConfiguration digestConfiguration, int frequency, long scopeUserId, boolean inactive)
 		throws Exception {
 
-		User scopeUser = UserLocalServiceUtil.fetchUser(scopeUserId);
-
-		if (scopeUser.isDefaultUser()) {
-			return true;
-		}
 
 		if (!digestConfiguration.isEnabled()) {
 			if (_log.isInfoEnabled()) {
@@ -428,35 +423,28 @@ public class DigestBuilderImpl implements DigestBuilder {
 			return true;
 		}
 
+		User scopeUser = UserLocalServiceUtil.fetchUser(scopeUserId);
+
+		if (scopeUser.isDefaultUser()) {
+			return true;
+		}
+
 		// portal digest configuration
 
 		DigestConfiguration portalDigestConfiguration =
 				DigestHelperUtil.getActivePortalDigestConfiguration(digestConfiguration.getCompanyId());
 
 		if (!inactive) {
+
 			// configuration frequency
 
-			int digestConfigurationFrequency;
-
-			// user digest configuration(frequency only)
-
-			UserDigestConfiguration userDigestConfiguration =
-					UserDigestConfigurationLocalServiceUtil.fetchUserDigestConfigurationByUserId(scopeUserId);
-
-			if (Validator.isNotNull(userDigestConfiguration)) {
-				digestConfigurationFrequency = userDigestConfiguration.getFrequency();
-			}
-			else {
-				// https://jira.netacad.net/jira/browse/NEX-8471
-				digestConfigurationFrequency = portalDigestConfiguration.getFrequency();
-			}
+			int digestConfigurationFrequency = DigestHelperUtil.getConfiguredFrequency(portalDigestConfiguration, scopeUser);
 
 			// validate frequency
 
 			try {
 				DigestHelperUtil.validateFrequency(digestConfigurationFrequency, frequency);
-			}
-			catch (InvalidDigestFrequencyException idfe) {
+			} catch (InvalidDigestFrequencyException idfe) {
 				return true;
 			}
 
@@ -488,13 +476,19 @@ public class DigestBuilderImpl implements DigestBuilder {
 	}
 
 	protected boolean isSkipSiteDigestConfiguration(
-			DigestConfiguration digestConfiguration, int frequency, long scopeGroupId, boolean inactive) throws Exception {
+			DigestConfiguration digestConfiguration, int frequency, long scopeUserId, long scopeGroupId, boolean inactive) throws Exception {
 
 		if (!digestConfiguration.isEnabled()) {
 			if (_log.isInfoEnabled()) {
 				_log.info("Digest Configuration (" + digestConfiguration.getId() + ") is disabled, skipping..");
 			}
 
+			return true;
+		}
+
+		User scopeUser = UserLocalServiceUtil.fetchUser(scopeUserId);
+
+		if (scopeUser.isDefaultUser()) {
 			return true;
 		}
 
@@ -519,18 +513,14 @@ public class DigestBuilderImpl implements DigestBuilder {
 		}
 
 		if (!inactive) {
+
 			// configuration frequency
 
-			int digestConfigurationFrequency;
-
-			// a site admin does not have a frequency setting
-
-			digestConfigurationFrequency = portalDigestConfiguration.getFrequency();
+			int digestConfigurationFrequency = DigestHelperUtil.getConfiguredFrequency(portalDigestConfiguration, scopeUser);
 
 			try {
 				DigestHelperUtil.validateFrequency(digestConfigurationFrequency, frequency);
-			}
-			catch (InvalidDigestFrequencyException idfe) {
+			} catch (InvalidDigestFrequencyException idfe) {
 				return true;
 			}
 

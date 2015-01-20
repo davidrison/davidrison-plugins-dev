@@ -22,7 +22,9 @@ import com.liferay.portlet.calendar.model.CalEvent;
 import com.liferay.portlet.digest.InvalidDigestFrequencyException;
 import com.liferay.portlet.digest.activity.DigestActivityType;
 import com.liferay.portlet.digest.activity.model.DigestConfiguration;
+import com.liferay.portlet.digest.activity.model.UserDigestConfiguration;
 import com.liferay.portlet.digest.activity.service.DigestConfigurationLocalServiceUtil;
+import com.liferay.portlet.digest.activity.service.UserDigestConfigurationLocalServiceUtil;
 import com.liferay.portlet.digest.activity.util.DigestActivityFactoryUtil;
 import com.liferay.portlet.digest.util.DigestConstants;
 import com.liferay.portlet.digest.util.DigestHelper;
@@ -132,6 +134,28 @@ public class DigestHelperImpl implements DigestHelper {
 	@Override
 	public List<Integer> getAvailableDigestActivityTypeActions(String activityTypeName) throws Exception {
 		return DigestActivityFactoryUtil.getDigestActivityTypeActions(activityTypeName);
+	}
+
+	@Override
+	public int getConfiguredFrequency(DigestConfiguration digestConfiguration, User user) throws Exception {
+
+		int digestConfigurationFrequency;
+
+		// user digest configuration(frequency only)
+
+		UserDigestConfiguration userDigestConfiguration =
+				UserDigestConfigurationLocalServiceUtil.fetchUserDigestConfigurationByUserId(user.getUserId());
+
+		if (Validator.isNotNull(userDigestConfiguration)) {
+			digestConfigurationFrequency = userDigestConfiguration.getFrequency();
+		}
+		else {
+			// https://jira.netacad.net/jira/browse/NEX-8471
+			// site admin has no frequency, inherits from portal
+			digestConfigurationFrequency = digestConfiguration.getFrequency();
+		}
+
+		return digestConfigurationFrequency;
 	}
 
 	@Override

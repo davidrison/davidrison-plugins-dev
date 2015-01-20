@@ -24,6 +24,7 @@ import com.liferay.portal.service.ClassNameLocalServiceUtil;
 import com.liferay.portlet.digest.activity.DigestActivityType;
 import com.liferay.portlet.digest.activity.impl.DigestActivityTypeImpl;
 import com.liferay.portlet.digest.activity.model.DigestConfiguration;
+import com.liferay.portlet.digest.activity.util.comparator.DigestActivityTypeComparator;
 import com.liferay.portlet.digest.util.DigestConstants;
 import com.liferay.portlet.digest.util.DigestFrequencyThreadLocal;
 import com.liferay.portlet.digest.util.DigestHelperUtil;
@@ -106,6 +107,8 @@ public class DigestConfigurationImpl extends DigestConfigurationBaseImpl {
 					new DigestActivityTypeImpl(
 							digestActivityTypesJSONArray.getString(i)));
 		}
+
+		Collections.sort(digestActivityTypes, new DigestActivityTypeComparator());
 
 		_digestActivityTypes = digestActivityTypes;
 
