@@ -6,6 +6,7 @@
 *.iws
 *.processed
 *.swp
+*.idea
 .ant_targets
 .ant-targets-build.xml
 .ivy

@@ -3,6 +3,7 @@ package com.aonhewitt.portlet.documentlibrary.service.impl;
 import com.aonhewitt.portal.core.cache.DocumentEntityCacheUtil;
 import com.aonhewitt.portal.core.cache.DocumentFinderCacheUtil;
 import com.aonhewitt.portal.core.util.CacheConstants;
+import com.aonhewitt.portal.core.util.RemoteDocumentThreadLocal;
 import com.aonhewitt.portal.core.util.RemotingConstants;
 import com.aonhewitt.portal.core.util.RemotingUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -41,7 +42,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public FileEntry addFileEntry(long repositoryId, long folderId, String sourceFileName, String mimeType, String title, String description, String changeLog, byte[] bytes, ServiceContext serviceContext) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:addFileEntry");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -79,7 +80,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public FileEntry addFileEntry(long repositoryId, long folderId, String sourceFileName, String mimeType, String title, String description, String changeLog, File file, ServiceContext serviceContext) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:addFileEntry");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -126,7 +127,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public FileEntry addFileEntry(long repositoryId, long folderId, String sourceFileName, String mimeType, String title, String description, String changeLog, InputStream is, long size, ServiceContext serviceContext) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:addFileEntry");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				return this.addFileEntry(
 						repositoryId, folderId, sourceFileName, mimeType,
@@ -181,7 +182,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public DLFileShortcut addFileShortcut(long repositoryId, long folderId, long toFileEntryId, ServiceContext serviceContext) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:addFileShortcut");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -218,7 +219,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public Folder addFolder(long repositoryId, long parentFolderId, String name, String description, ServiceContext serviceContext) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:addFolder");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -257,7 +258,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public String addTempFileEntry(long groupId, long folderId, String fileName, String tempFolderName, File file) throws PortalException, SystemException, IOException {
 		_log.info("DLAppServiceImpl:addTempFileEntry");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -296,7 +297,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public String addTempFileEntry(long groupId, long folderId, String fileName, String tempFolderName, InputStream inputStream) throws PortalException, SystemException, IOException {
 		_log.info("DLAppServiceImpl:addTempFileEntry");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				return this.addTempFileEntry(
 						groupId, folderId, fileName, tempFolderName, FileUtil.createTempFile(inputStream));
@@ -340,7 +341,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public void cancelCheckOut(long fileEntryId) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:cancelCheckOut");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -369,7 +370,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public void checkInFileEntry(long fileEntryId, boolean majorVersion, String changeLog, ServiceContext serviceContext) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:checkInFileEntry");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -404,7 +405,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public void checkInFileEntry(long fileEntryId, String lockUuid) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:checkInFileEntry");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -435,7 +436,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public void checkOutFileEntry(long fileEntryId, ServiceContext serviceContext) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:checkOutFileEntry");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -466,7 +467,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public FileEntry checkOutFileEntry(long fileEntryId, String owner, long expirationTime, ServiceContext serviceContext) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:checkOutFileEntry");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -503,7 +504,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public Folder copyFolder(long repositoryId, long sourceFolderId, long parentFolderId, String name, String description, ServiceContext serviceContext) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:copyFolder");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -544,7 +545,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public void deleteFileEntry(long fileEntryId) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:deleteFileEntry");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -573,7 +574,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public void deleteFileEntryByTitle(long repositoryId, long folderId, String title) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:deleteFileEntryByTitle");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -606,7 +607,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public void deleteFileShortcut(long fileShortcutId) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:deleteFileShortcut");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -635,7 +636,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public void deleteFolder(long folderId) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:deleteFolder");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -664,7 +665,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public void deleteFolder(long repositoryId, long parentFolderId, String name) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:deleteFolder");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -697,7 +698,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public void deleteTempFileEntry(long groupId, long folderId, String fileName, String tempFolderName) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:deleteTempFileEntry");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -732,7 +733,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<FileEntry> getFileEntries(long repositoryId, long folderId) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFileEntries");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			Object[] finderArgs = new Object[]{repositoryId, folderId};
 
 			List<FileEntry> fileEntries = (List<FileEntry>) DocumentFinderCacheUtil.getResult(
@@ -780,7 +781,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<FileEntry> getFileEntries(long repositoryId, long folderId, int start, int end) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFileEntries");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			Object[] finderArgs = new Object[]{repositoryId, folderId, start, end};
 
 			List<FileEntry> fileEntries = (List<FileEntry>) DocumentFinderCacheUtil.getResult(
@@ -832,7 +833,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<FileEntry> getFileEntries(long repositoryId, long folderId, int start, int end, OrderByComparator obc) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFileEntries");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			Object[] finderArgs = new Object[]{repositoryId, folderId, start, end, obc};
 
 			List<FileEntry> fileEntries = (List<FileEntry>) DocumentFinderCacheUtil.getResult(
@@ -886,7 +887,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<FileEntry> getFileEntries(long repositoryId, long folderId, long fileEntryTypeId) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFileEntries");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -921,7 +922,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<FileEntry> getFileEntries(long repositoryId, long folderId, long fileEntryTypeId, int start, int end) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFileEntries");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -960,7 +961,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<FileEntry> getFileEntries(long repositoryId, long folderId, long fileEntryTypeId, int start, int end, OrderByComparator obc) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFileEntries");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -1001,7 +1002,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<Object> getFileEntriesAndFileShortcuts(long repositoryId, long folderId, int status, int start, int end) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFileEntriesAndFileShortcuts");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			Object[] finderArgs = new Object[]{repositoryId, folderId, status, start, end};
 
 			List<Object> fileEntriesAndFileShortcuts = (List<Object>) DocumentFinderCacheUtil.getResult(
@@ -1055,7 +1056,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public int getFileEntriesAndFileShortcutsCount(long repositoryId, long folderId, int status) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFileEntriesAndFileShortcutsCount");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object count = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -1089,7 +1090,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public int getFileEntriesAndFileShortcutsCount(long repositoryId, long folderId, int status, String[] mimeTypes) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFileEntriesAndFileShortcutsCount");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object count = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -1125,7 +1126,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public int getFileEntriesCount(long repositoryId, long folderId) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFileEntriesCount");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -1158,7 +1159,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public int getFileEntriesCount(long repositoryId, long folderId, long fileEntryTypeId) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFileEntriesCount");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -1193,7 +1194,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public FileEntry getFileEntry(long fileEntryId) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFileEntry");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			FileEntry fileEntry = (FileEntry) DocumentEntityCacheUtil.getResult(
 					CacheConstants.DOCUMENT_FINDER_CACHE_ENABLED, FileEntry.class, fileEntryId
 			);
@@ -1236,7 +1237,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public FileEntry getFileEntry(long groupId, long folderId, String title) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFileEntry");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -1270,7 +1271,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public FileEntry getFileEntryByUuidAndGroupId(String uuid, long groupId) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFileEntryByUuidAndGroupId");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -1302,7 +1303,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public DLFileShortcut getFileShortcut(long fileShortcutId) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFileShortcut");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -1333,7 +1334,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public Folder getFolder(long folderId) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFolder");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			Folder folder = (Folder) DocumentEntityCacheUtil.getResult(
 					CacheConstants.DOCUMENT_FINDER_CACHE_ENABLED, Folder.class, folderId
 			);
@@ -1376,7 +1377,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public Folder getFolder(long repositoryId, long parentFolderId, String name) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFolder");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -1410,7 +1411,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<Folder> getFolders(long repositoryId, long parentFolderId) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFolders");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			Object[] finderArgs = new Object[]{repositoryId, parentFolderId};
 
 			List<Folder> folders = (List<Folder>) DocumentFinderCacheUtil.getResult(
@@ -1457,7 +1458,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<Folder> getFolders(long repositoryId, long parentFolderId, boolean includeMountFolders) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFolders");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -1491,7 +1492,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<Folder> getFolders(long repositoryId, long parentFolderId, boolean includeMountFolders, int start, int end) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFolders");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -1529,7 +1530,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<Folder> getFolders(long repositoryId, long parentFolderId, boolean includeMountFolders, int start, int end, OrderByComparator obc) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFolders");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 
 			Object[] finderArgs = new Object[]{repositoryId, parentFolderId, includeMountFolders, start, end, obc};
 
@@ -1586,7 +1587,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<Folder> getFolders(long repositoryId, long parentFolderId, int start, int end) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFolders");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			Object[] finderArgs = new Object[]{repositoryId, parentFolderId, start, end};
 
 			List<Folder> folders = (List<Folder>) DocumentFinderCacheUtil.getResult(
@@ -1637,7 +1638,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<Folder> getFolders(long repositoryId, long parentFolderId, int start, int end, OrderByComparator obc) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFolders");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			Object[] finderArgs = new Object[]{repositoryId, parentFolderId, start, end};
 
 			List<Folder> folders = (List<Folder>) DocumentFinderCacheUtil.getResult(
@@ -1690,7 +1691,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<Object> getFoldersAndFileEntriesAndFileShortcuts(long repositoryId, long folderId, int status, boolean includeMountFolders, int start, int end) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFoldersAndFileEntriesAndFileShortcuts");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -1731,7 +1732,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<Object> getFoldersAndFileEntriesAndFileShortcuts(long repositoryId, long folderId, int status, boolean includeMountFolders, int start, int end, OrderByComparator obc) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFoldersAndFileEntriesAndFileShortcuts");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -1774,7 +1775,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<Object> getFoldersAndFileEntriesAndFileShortcuts(long repositoryId, long folderId, int status, String[] mimeTypes, boolean includeMountFolders, int start, int end, OrderByComparator obc) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFoldersAndFileEntriesAndFileShortcuts");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -1819,7 +1820,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public int getFoldersAndFileEntriesAndFileShortcutsCount(long repositoryId, long folderId, int status, boolean includeMountFolders) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFoldersAndFileEntriesAndFileShortcutsCount");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -1856,7 +1857,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public int getFoldersAndFileEntriesAndFileShortcutsCount(long repositoryId, long folderId, int status, String[] mimeTypes, boolean includeMountFolders) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFoldersAndFileEntriesAndFileShortcutsCount");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -1895,7 +1896,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public int getFoldersCount(long repositoryId, long parentFolderId) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFoldersCount, repositoryId=" + repositoryId + " parentFolderId=" + parentFolderId);
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object count = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -1926,7 +1927,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	@Override
 	public int getFoldersCount(long repositoryId, long parentFolderId, boolean includeMountFolders) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFoldersCount");
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object count = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -1961,7 +1962,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public int getFoldersFileEntriesCount(long repositoryId, List<Long> folderIds, int status) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getFoldersFileEntriesCount");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -1996,7 +1997,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<FileEntry> getGroupFileEntries(long groupId, long userId, int start, int end) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getGroupFileEntries");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2033,7 +2034,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<FileEntry> getGroupFileEntries(long groupId, long userId, int start, int end, OrderByComparator obc) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getGroupFileEntries");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2072,7 +2073,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<FileEntry> getGroupFileEntries(long groupId, long userId, long rootFolderId, int start, int end) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getGroupFileEntries");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2111,7 +2112,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<FileEntry> getGroupFileEntries(long groupId, long userId, long rootFolderId, int start, int end, OrderByComparator obc) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getGroupFileEntries");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2152,7 +2153,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<FileEntry> getGroupFileEntries(long groupId, long userId, long rootFolderId, String[] mimeTypes, int status, int start, int end, OrderByComparator obc) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getGroupFileEntries");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2197,7 +2198,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public int getGroupFileEntriesCount(long groupId, long userId) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getGroupFileEntriesCount");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2230,7 +2231,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public int getGroupFileEntriesCount(long groupId, long userId, long rootFolderId) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getGroupFileEntriesCount");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2265,7 +2266,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public int getGroupFileEntriesCount(long groupId, long userId, long rootFolderId, String[] mimeTypes, int status) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getGroupFileEntriesCount");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2304,7 +2305,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<Folder> getMountFolders(long repositoryId, long parentFolderId) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getMountFolders");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2336,7 +2337,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<Folder> getMountFolders(long repositoryId, long parentFolderId, int start, int end) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getMountFolders");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2372,7 +2373,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<Folder> getMountFolders(long repositoryId, long parentFolderId, int start, int end, OrderByComparator obc) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getMountFolders");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2409,7 +2410,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public int getMountFoldersCount(long repositoryId, long parentFolderId) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getMountFoldersCount");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2442,7 +2443,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public void getSubfolderIds(long repositoryId, List<Long> folderIds, long folderId) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getSubfolderIds");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2473,7 +2474,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<Long> getSubfolderIds(long repositoryId, long folderId) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getSubfolderIds");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2506,7 +2507,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public List<Long> getSubfolderIds(long repositoryId, long folderId, boolean recurse) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getSubfolderIds");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2541,7 +2542,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public String[] getTempFileEntryNames(long groupId, long folderId, String tempFolderName) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:getTempFileEntryNames");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2576,7 +2577,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public Lock lockFileEntry(long fileEntryId) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:lockFileEntry");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			Lock lock = (Lock) DocumentEntityCacheUtil.getResult(
 					CacheConstants.DOCUMENT_FINDER_CACHE_ENABLED, Lock.class, fileEntryId
 			);
@@ -2620,7 +2621,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public Lock lockFileEntry(long fileEntryId, String owner, long expirationTime) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:lockFileEntry");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2655,7 +2656,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public Lock lockFolder(long repositoryId, long folderId) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:lockFolder");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2688,7 +2689,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public Lock lockFolder(long repositoryId, long folderId, String owner, boolean inheritable, long expirationTime) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:lockFolder");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2727,7 +2728,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public FileEntry moveFileEntry(long fileEntryId, long newFolderId, ServiceContext serviceContext) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:moveFileEntry");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2762,7 +2763,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public Folder moveFolder(long folderId, long parentFolderId, ServiceContext serviceContext) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:moveFolder");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2797,7 +2798,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public Lock refreshFileEntryLock(String lockUuid, long expirationTime) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:refreshFileEntryLock");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2830,7 +2831,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public Lock refreshFolderLock(String lockUuid, long expirationTime) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:refreshFolderLock");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2863,7 +2864,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public void revertFileEntry(long fileEntryId, String version, ServiceContext serviceContext) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:revertFileEntry");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2896,7 +2897,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public Hits search(long repositoryId, SearchContext searchContext) throws SearchException {
 		_log.info("DLAppServiceImpl:search");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2929,7 +2930,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public Hits search(long repositoryId, SearchContext searchContext, Query query) throws SearchException {
 		_log.info("DLAppServiceImpl:search");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2964,7 +2965,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public void unlockFileEntry(long fileEntryId) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:unlockFileEntry");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -2993,7 +2994,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public void unlockFileEntry(long fileEntryId, String lockUuid) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:unlockFileEntry");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -3024,7 +3025,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public void unlockFolder(long repositoryId, long folderId, String lockUuid) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:unlockFolder");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -3057,7 +3058,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public void unlockFolder(long repositoryId, long parentFolderId, String name, String lockUuid) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:unlockFolder");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -3092,7 +3093,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public FileEntry updateFileEntry(long fileEntryId, String sourceFileName, String mimeType, String title, String description, String changeLog, boolean majorVersion, byte[] bytes, ServiceContext serviceContext) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:updateFileEntry");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -3139,7 +3140,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public FileEntry updateFileEntry(long fileEntryId, String sourceFileName, String mimeType, String title, String description, String changeLog, boolean majorVersion, File file, ServiceContext serviceContext) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:updateFileEntry");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -3186,7 +3187,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public FileEntry updateFileEntry(long fileEntryId, String sourceFileName, String mimeType, String title, String description, String changeLog, boolean majorVersion, InputStream is, long size, ServiceContext serviceContext) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:updateFileEntry");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				return this.updateFileEntry(fileEntryId, sourceFileName, mimeType, title, description, changeLog,
 						majorVersion, FileUtil.getBytes(is, (int)size), serviceContext);
@@ -3239,7 +3240,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public FileEntry updateFileEntryAndCheckIn(long fileEntryId, String sourceFileName, String mimeType, String title, String description, String changeLog, boolean majorVersion, File file, ServiceContext serviceContext) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:updateFileEntryAndCheckIn");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -3286,7 +3287,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public FileEntry updateFileEntryAndCheckIn(long fileEntryId, String sourceFileName, String mimeType, String title, String description, String changeLog, boolean majorVersion, InputStream is, long size, ServiceContext serviceContext) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:updateFileEntryAndCheckIn");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				return this.updateFileEntryAndCheckIn(fileEntryId, sourceFileName, mimeType,
 						title, description, changeLog, majorVersion, FileUtil.createTempFile(is), serviceContext);
@@ -3340,7 +3341,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public DLFileShortcut updateFileShortcut(long fileShortcutId, long folderId, long toFileEntryId, ServiceContext serviceContext) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:updateFileShortcut");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -3377,7 +3378,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public Folder updateFolder(long folderId, String name, String description, ServiceContext serviceContext) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:updateFolder");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -3414,7 +3415,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public boolean verifyFileEntryCheckOut(long repositoryId, long fileEntryId, String lockUuid) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:verifyFileEntryCheckOut");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -3449,7 +3450,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public boolean verifyFileEntryLock(long repositoryId, long fileEntryId, String lockUuid) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:verifyFileEntryLock");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
@@ -3484,7 +3485,7 @@ public class DLAppServiceImpl extends DLAppServiceWrapper {
 	public boolean verifyInheritableLock(long repositoryId, long folderId, String lockUuid) throws PortalException, SystemException {
 		_log.info("DLAppServiceImpl:verifyInheritableLock");
 
-		if (RemotingConstants.REMOTE_HOST_ENABLED) {
+		if (RemotingConstants.REMOTE_HOST_ENABLED && RemoteDocumentThreadLocal.isRemote()) {
 			try {
 				Object retval = RemotingUtil.invoke(
 						PropsUtil.get("poc.remote.host.name"),
