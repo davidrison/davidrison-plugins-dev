@@ -16,6 +16,11 @@
 
 <%@ include file="/html/portlet/document_library_display/init.jsp" %>
 
+<%-- BEGIN CUSTOMIZATION FOR AON HEWITT POC - 4/27/2015 --%>
+<%@ page import="com.aonhewitt.portal.core.util.RemotingConstants" %>
+<%@ page import="com.aonhewitt.portal.core.util.RemoteDocumentThreadLocal" %>
+<%-- END CUSTOMIZATION FOR AON HEWITT POC - 4/27/2015 --%>
+
 <%
 String redirect = ParamUtil.getString(request, "redirect");
 
@@ -107,6 +112,12 @@ int mountFoldersCount = DLAppServiceUtil.getMountFoldersCount(scopeGroupId, DLFo
 
 		for (int i = 0; i < results.getDocs().length; i++) {
 			Document doc = results.doc(i);
+
+			/** BEGIN CUSTOMIZATION FOR AON HEWITT POC - 4/27/2015**/
+			boolean isRemoteDocument = GetterUtil.getBoolean(doc.get(RemotingConstants.IS_REMOTE_DOCUMENT), false);
+
+			RemoteDocumentThreadLocal.setRemote(isRemoteDocument);
+			/** END CUSTOMIZATION FOR AON HEWITT POC - 4/27/2015**/
 
 			ResultRow row = new ResultRow(doc, i, i);
 

@@ -12,6 +12,8 @@ public class RemotingConstants {
 
 	public static boolean REMOTE_HOST_ENABLED = false;
 
+	public static String IS_REMOTE_DOCUMENT = "isRemoteDocument";
+
 	static {
 		REMOTE_HOST_ENABLED = GetterUtil.getBoolean(
 				PropsUtil.get("poc.remote.host.enabled"), false);

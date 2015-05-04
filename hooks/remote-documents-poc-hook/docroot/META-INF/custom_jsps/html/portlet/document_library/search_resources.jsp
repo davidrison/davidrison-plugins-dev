@@ -16,6 +16,11 @@
 
 <%@ include file="/html/portlet/document_library/init.jsp" %>
 
+<%-- BEGIN CUSTOMIZATION FOR AON HEWITT POC - 4/27/2015 --%>
+<%@ page import="com.aonhewitt.portal.core.util.RemotingConstants" %>
+<%@ page import="com.aonhewitt.portal.core.util.RemoteDocumentThreadLocal" %>
+<%-- END CUSTOMIZATION FOR AON HEWITT POC - 4/27/2015 --%>
+
 <%
 String redirect = ParamUtil.getString(request, "redirect");
 
@@ -256,6 +261,12 @@ int total = 0;
 
 				if (docs != null) {
 					for (Document doc : docs) {
+
+						/** BEGIN CUSTOMIZATION FOR AON HEWITT POC - 4/27/2015**/
+						boolean isRemoteDocument = GetterUtil.getBoolean(doc.get(RemotingConstants.IS_REMOTE_DOCUMENT), false);
+
+						RemoteDocumentThreadLocal.setRemote(isRemoteDocument);
+						/** END CUSTOMIZATION FOR AON HEWITT POC - 4/27/2015**/
 
 						// Folder and document
 
