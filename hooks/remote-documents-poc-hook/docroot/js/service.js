@@ -1,0 +1,1 @@
+Liferay.Service.register("Liferay.Service.POC_Documents", "com.liferay.aonhewitt.service", "remote-documents-poc-hook");

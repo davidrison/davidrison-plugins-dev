@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hook PUBLIC "-//Liferay//DTD Hook 6.1.0//EN" "http://www.liferay.com/dtd/liferay-hook_6_1_0.dtd">
+
+<hook>
+	<portal-properties>portal.properties</portal-properties>
+	<!--<custom-jsp-dir>/META-INF/custom_jsps</custom-jsp-dir>-->
+	<service>
+		<service-type>com.liferay.portlet.documentlibrary.service.DLAppService</service-type>
+		<service-impl>com.aonhewitt.portlet.documentlibrary.service.impl.DLAppServiceImpl</service-impl>
+	</service>
+	<service>
+		<service-type>com.liferay.portlet.documentlibrary.service.DLFileVersionService</service-type>
+		<service-impl>com.aonhewitt.portlet.documentlibrary.service.impl.DLFileVersionServiceImpl</service-impl>
+	</service>
+	<service>
+		<service-type>com.liferay.portlet.documentlibrary.service.DLFileVersionLocalService</service-type>
+		<service-impl>com.aonhewitt.portlet.documentlibrary.service.impl.DLFileVersionLocalServiceImpl</service-impl>
+	</service>
+	<!--<struts-action>
+		<struts-action-path>/document_library/edit_file_entry</struts-action-path>
+		<struts-action-impl>com.aonhewitt.portlet.documentlibrary.action.EditFileEntryAction</struts-action-impl>
+	</struts-action>
+	<struts-action>
+		<struts-action-path>/document_library/move_file_entry</struts-action-path>
+		<struts-action-impl>com.aonhewitt.portlet.documentlibrary.action.EditFileEntryAction</struts-action-impl>
+	</struts-action>
+	<struts-action>
+		<struts-action-path>/document_library/upload_multiple_file_entries</struts-action-path>
+		<struts-action-impl>com.aonhewitt.portlet.documentlibrary.action.EditFileEntryAction</struts-action-impl>
+	</struts-action>
+	<struts-action>
+		<struts-action-path>/document_library/view_file_entry</struts-action-path>
+		<struts-action-impl>com.aonhewitt.portlet.documentlibrary.action.EditFileEntryAction</struts-action-impl>
+	</struts-action>
+	<struts-action>
+		<struts-action-path>/image_gallery_display/edit_image</struts-action-path>
+		<struts-action-impl>com.aonhewitt.portlet.documentlibrary.action.EditFileEntryAction</struts-action-impl>
+	</struts-action>
+	<struts-action>
+		<struts-action-path>/image_gallery_display/view_image</struts-action-path>
+		<struts-action-impl>com.aonhewitt.portlet.documentlibrary.action.EditFileEntryAction</struts-action-impl>
+	</struts-action>-->
+</hook>

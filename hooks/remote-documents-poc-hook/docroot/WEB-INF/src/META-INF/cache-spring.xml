@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<beans
+		default-destroy-method="destroy"
+		default-init-method="afterPropertiesSet"
+		xmlns="http://www.springframework.org/schema/beans"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+		>
+
+	<bean id="multiVMPool" class="com.liferay.portal.kernel.cache.MultiVMPoolUtil" factory-method="getMultiVMPool" />
+
+	<bean id="com.aonhewitt.portal.core.cache.DocumentEntityCacheUtil" class="com.aonhewitt.portal.core.cache.DocumentEntityCacheUtil">
+		<property name="documentEntityCache">
+			<bean class="com.aonhewitt.portal.core.cache.DocumentEntityCacheImpl">
+				<property name="multiVMPool" ref="multiVMPool" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="com.aonhewitt.portal.core.cache.DocumentFinderCacheUtil" class="com.aonhewitt.portal.core.cache.DocumentFinderCacheUtil">
+		<property name="documentFinderCache">
+			<bean class="com.aonhewitt.portal.core.cache.DocumentFinderCacheImpl">
+				<property name="multiVMPool" ref="multiVMPool" />
+			</bean>
+		</property>
+	</bean>
+</beans>
